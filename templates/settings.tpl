@@ -18,7 +18,7 @@
             'singleLogoutService' => array (
                 'url' => '{{sp_base}}/index.php?sls',
             ),
-            'NameIDFormat' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified',
+            'NameIDFormat' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
             'x509cert' => '{{sp_cert}}',
             'privateKey' => '{{sp_key}}',
         ),
