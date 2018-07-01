@@ -1,0 +1,8 @@
+{
+    "require": {
+        "onelogin/php-saml": "3.0.0.x-dev",
+        "twig/twig": "^2.4",
+        "symfony/yaml": "^4.1",
+        "squizlabs/php_codesniffer": "*"
+    }
+}

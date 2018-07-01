@@ -1,0 +1,12 @@
+---
+# SERVICE PROVIDER CONFIGURATION
+
+# SP base URL
+sp_base: "http://localhost:8000"
+
+# SP key and certificate location
+sp_key_file: "sp.key"
+sp_cert_file: "sp.crt"
+
+# URL for IDP metadata
+idp_metadata_url: "https://idp.simevo.com/metadata"

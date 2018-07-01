@@ -1,0 +1,6 @@
+sp.key
+sp.crt
+vendor
+tmp
+www/settings.php
+config.yaml
