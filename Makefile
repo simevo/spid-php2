@@ -1,4 +1,6 @@
 all: sp.key
+	# clean up twig cache
+	rm -rf tmp
 	mkdir -p tmp
 	./bin/configure.php > www/settings.php
 
