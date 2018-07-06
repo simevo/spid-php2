@@ -30,7 +30,7 @@ if (isset($_GET['sso'])) {
     $auth->login($returnTo);
 } elseif (isset($_GET['slo'])) {
     $returnTo = null;
-    $paramters = array();
+    $parameters = array();
     $nameId = null;
     $sessionIndex = null;
     $nameIdFormat = null;
@@ -45,10 +45,10 @@ if (isset($_GET['sso'])) {
         $nameIdFormat = $_SESSION['samlNameIdFormat'];
     }
 
-    $auth->logout($returnTo, $paramters, $nameId, $sessionIndex, false, $nameIdFormat);
+    $auth->logout($returnTo, $parameters, $nameId, $sessionIndex, false, $nameIdFormat);
 
     # If LogoutRequest ID need to be saved in order to later validate it, do instead
-    # $sloBuiltUrl = $auth->logout(null, $paramters, $nameId, $sessionIndex, true);
+    # $sloBuiltUrl = $auth->logout(null, $parameters, $nameId, $sessionIndex, true);
     # $_SESSION['LogoutRequestID'] = $auth->getLastRequestID();
     # header('Pragma: no-cache');
     # header('Cache-Control: no-cache, must-revalidate');
