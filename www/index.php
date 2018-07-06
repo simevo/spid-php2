@@ -26,7 +26,7 @@ if (isset($_GET['sso'])) {
     # header('Location: ' . $ssoBuiltUrl);
     # exit();
 } elseif (isset($_GET['sso2'])) {
-    $returnTo = $spBaseUrl.'/demo1/attrs.php';
+    $returnTo = $spBaseUrl . '/attrs.php';
     $auth->login($returnTo);
 } elseif (isset($_GET['slo'])) {
     $returnTo = null;

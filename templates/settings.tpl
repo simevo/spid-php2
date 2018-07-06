@@ -1,5 +1,7 @@
 <?php
 
+    $spBaseUrl = '{{sp_base}}';
+
     $settingsInfo = array (
         // If 'strict' is True, then the PHP Toolkit will reject unsigned
         // or unencrypted messages if it expects them to be signed or encrypted.

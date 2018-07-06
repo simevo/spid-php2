@@ -2,7 +2,7 @@
 # SERVICE PROVIDER CONFIGURATION
 
 # SP base URL
-sp_base: "http://localhost:8000"
+sp_base: "http://sp2.simevo.com"
 
 # SP key and certificate location
 sp_key_file: "sp.key"
