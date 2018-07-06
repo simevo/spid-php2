@@ -14,7 +14,7 @@ Perform these steps to install the prerequisites:
 ```
 sudo apt install composer make openssl php-curl php-zip php-xml
 ```
-if you have PHP <= 7.1 (i.e. Debian 9.4 stretch or earlier), then zou also need:
+if you have PHP <= 7.1 (i.e. Debian 9.4 stretch or earlier), then you also need:
 ```
 apt install php-mcrypt
 ```
@@ -47,6 +47,10 @@ To set it up and run it:
 3. Start PHP's builtin webserver in the root of the repo:
     ```
     php -S localhost:8000 -t www
+    ```
+    if you have php-saml v2.x (i.e. Debian 9.4 stretch), then run it from the www2 dir:
+    ```
+    php -S localhost:8000 -t www2
     ```
 
 4. visit http://localhost:8000/metadata.php to get the SP (Service Provider) metadata, then copy these over to the IDP

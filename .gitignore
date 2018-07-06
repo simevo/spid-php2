@@ -3,4 +3,6 @@ sp.crt
 vendor
 tmp
 www/settings.php
+www2/settings.php
 config.yaml
+.directory
