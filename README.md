@@ -12,7 +12,11 @@ Tested on Debian 10.x buster with PHP 7.2.
 
 Perform these steps to install the prerequisites:
 ```
-sudo apt install composer make openssl php-curl
+sudo apt install composer make openssl php-curl php-zip php-xml
+```
+if you have PHP <= 7.1 (i.e. Debian 9.4 stretch or earlier), then zou also need:
+```
+apt install php-mcrypt
 ```
 
 Then install PHP dependencies; if you have PHP 7.2 (i.e. Debian 10.x buster):
