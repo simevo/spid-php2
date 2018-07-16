@@ -38,6 +38,6 @@
             'authnRequestsSigned' => true,
             'signMetadata' => true,
             'signatureAlgorithm' => 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
-            'requestedAuthnContext' => 'https://www.spid.gov.it/SpidL1',
+            'requestedAuthnContext' => array('https://www.spid.gov.it/SpidL1'),
         ),
     );
