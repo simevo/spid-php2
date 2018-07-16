@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8">
+    <title>Spid-php2 demo</title>
+    <script type="text/javascript" src="dev/agid-spid-enter.min.js"></script>
+  </head>
+  <body>
+    <div class="agid-spid-enter-button" id='my-spid-button' aria-live="polite" data-size="l">
+      <noscript>
+        Il login tramite SPID richiede che JavaScript sia abilitato nel browser
+      </noscript>
+    </div>
+  </body>
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log("DOM fully loaded and parsed");
+      var spid = new window.SPID();
+      spid.init({
+        lang: 'en',                   // opzionale
+        selector: '#my-spid-button',  // opzionale
+        method: 'POST',               // opzionale
+        url: '/?sso',                // obbligatorio
+        fieldName: 'idp',             // opzionale
+        extraFields: {                // opzionale
+          foo: 'bar',
+          baz: 'baz'
+        },
+        mapping: {                    // opzionale
+          'https://loginspid.aruba.it': 4,
+          'https://posteid.poste.it': 5,
+          'https://idp.namirialtsp.com/idp': 7,
+        },
+        supported: [                  // obbligatorio
+          'sielte.it'
+        ],
+        extraProviders: [            // opzionale
+          {
+            "protocols": ["SAML"],
+            "entityName": "Testenv2",
+            "logo": "../../spid-idp-testenv2.svg",
+            "entityID": "http://idp.simevo.com:8088",
+            "active": true
+          }
+        ],
+        protocol: "SAML"
+      });
+    });
+  </script>
+</html>

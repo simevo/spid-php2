@@ -116,4 +116,5 @@ if (isset($_SESSION['samlUserdata'])) {
     echo '<p><a href="?sso" >Login</a></p>';
     echo '<p><a href="?sso2" >Login and access to attrs.php page</a></p>';
     echo '<p><a href="metadata.php" >Show the SP metadata</a></p>';
+    echo '<p><a href="index2.html"> Test with spid-smart-button</p>';
 }

@@ -12,14 +12,19 @@ Tested on Debian 10.x buster with PHP 7.2.
 
 Perform these steps to install the prerequisites:
 ```
-sudo apt install composer make openssl php-curl php-zip php-xml
+sudo apt install composer make openssl php-curl php-zip php-xml ruby-sass node-uglifyjs yarnpkg
 ```
 if you have PHP <= 7.1 (i.e. Debian 9.4 stretch or earlier), then you also need:
 ```
 apt install php-mcrypt
 ```
 
-Then install PHP dependencies; if you have PHP 7.2 (i.e. Debian 10.x buster):
+Then install JS dependencies:
+```
+yarkpkg install
+```
+
+Finally install PHP dependencies; if you have PHP 7.2 (i.e. Debian 10.x buster):
 ```
 composer install
 ```

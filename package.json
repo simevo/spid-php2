@@ -1,0 +1,12 @@
+{
+  "name": "spid-php2",
+  "version": "0.0.1",
+  "description": "SDK for easy SPID SSO based on php-saml",
+  "main": "www/index.php",
+  "repository": "https://github.com/simevo/spid-php2.git",
+  "author": "Paolo Greppi <paolo.greppi@libpf.com>",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "spid-smart-button": "https://github.com/apuliasoft/spid-smart-button"
+  }
+}
