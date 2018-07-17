@@ -36,6 +36,8 @@
         ),
         'security' => array (
             'authnRequestsSigned' => true,
+            'logoutRequestSigned' => true,
+            'logoutResponseSigned' => true,
             'signMetadata' => true,
             'signatureAlgorithm' => 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
             'requestedAuthnContext' => array('https://www.spid.gov.it/SpidL1'),
