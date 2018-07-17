@@ -45,7 +45,7 @@ if (isset($_GET['sso'])) {
         $nameIdFormat = $_SESSION['samlNameIdFormat'];
     }
 
-    $auth->logout($returnTo, $parameters, $nameId, $sessionIndex, false, $nameIdFormat);
+    $auth->logout($returnTo, $parameters, $nameId, $sessionIndex, false, $nameIdFormat, 'aaa');
 
     # If LogoutRequest ID need to be saved in order to later validate it, do instead
     # $sloBuiltUrl = $auth->logout(null, $parameters, $nameId, $sessionIndex, true);
