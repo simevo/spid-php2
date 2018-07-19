@@ -7,3 +7,4 @@ www2/settings.php
 config.yaml
 .directory
 AuthnRequest.patched
+LogoutRequest.patched
