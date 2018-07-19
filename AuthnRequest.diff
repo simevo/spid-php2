@@ -1,0 +1,9 @@
+56,57c56
+<         Format="{$nameIDPolicyFormat}"
+<         AllowCreate="true" />
+---
+>         Format="{$nameIDPolicyFormat}" />
+130c129
+<     <saml:Issuer>{$spEntityId}</saml:Issuer>
+---
+>     <saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity" NameQualifier="http://sp2.simevo.com:8000">{$spEntityId}</saml:Issuer>

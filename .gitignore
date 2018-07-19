@@ -6,3 +6,4 @@ www/settings.php
 www2/settings.php
 config.yaml
 .directory
+AuthnRequest.patched
