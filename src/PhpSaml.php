@@ -1,9 +1,9 @@
 <?php
 
-class PhpSaml
+class PhpSaml implements PhpSamlInterdface
 {
 
-    private $php_saml = null;
+    private $phpSaml = null;
 
     public function __construct($idpUrl, $settings = null, $mode = 'onelogin')
     {
@@ -14,12 +14,27 @@ class PhpSaml
 
         switch ($mode) {
             case 'onelogin':
-                $this->php_saml = new PhpSamlOneLogin($idpUrl, $settings);
+                $this->phpSaml = new PhpSamlOneLogin($idpUrl, $settings);
                 break;
             default:
-                $this->php_saml = new PhpSamlOneLogin($idpUrl, $settings);
+                $this->phpSaml = new PhpSamlOneLogin($idpUrl, $settings);
                 break;
         }
+    }
+
+    public function isAuthenticated()
+    {
+        $this->phpSaml->isAuthenticated();
+    }
+
+    public function login()
+    {
+        $this->phpSaml->login();
+    }
+    
+    public function logout()
+    {
+        $this->phpSaml->logout();
     }
 
 }
