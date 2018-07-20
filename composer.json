@@ -4,5 +4,17 @@
         "twig/twig": "^2.4",
         "symfony/yaml": "^4.1",
         "squizlabs/php_codesniffer": "*"
+    },
+
+    "scripts": {
+        "post-install-cmd": [
+            "setup\\Configuration::setup"
+        ],
+        "post-update-cmd": [
+            "setup\\Configuration::setup"
+        ],
+        "autoload": {
+            "classmap": ["bin/"]
+        }   
     }
 }

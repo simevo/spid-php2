@@ -1,10 +1,12 @@
 <?php
 
-class PhpSaml {
+class PhpSaml
+{
 
     private $php_saml = null;
 
-    public function __construct($settings = null, $mode = 'onelogin') {
+    public function __construct($idpUrl, $settings = null, $mode = 'onelogin')
+    {
 
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -12,10 +14,10 @@ class PhpSaml {
 
         switch ($mode) {
             case 'onelogin':
-                $this->php_saml = new PhpSamlOneLogin($settings);
+                $this->php_saml = new PhpSamlOneLogin($idpUrl, $settings);
                 break;
             default:
-                $this->php_saml = new PhpSamlOneLogin($settings);
+                $this->php_saml = new PhpSamlOneLogin($idpUrl, $settings);
                 break;
         }
     }
