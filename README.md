@@ -1,5 +1,7 @@
 # spid-php2
 
+Work in progress. Do not merge this branch.
+
 Software Development Kit (SDK) for easy SPID SSO integration based on [php-saml](https://github.com/onelogin/php-saml).
 
 This component acts as a SPID SP (Service Provider) and logs you in via an external IDP (IDentity Provider).
