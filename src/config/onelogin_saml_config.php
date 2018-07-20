@@ -1,11 +1,15 @@
 <?php
+
     // Default values
     $spBaseUrl = '';
     $idpEntityId = '';
-    $idpSSO= $idpEntityId . '/sso';
+    $idpSSO = $idpEntityId . '/sso';
     $idpSLO = $idpEntityId . '/slo';
+    $spKeyFile = 'sp.key';
+    $spCrtFile = 'sp.crt';
+    $idpCertFile = '';
 
-    $settingsInfo = array (
+    return $defaultSettings = array (
         // If 'strict' is True, then the PHP Toolkit will reject unsigned
         // or unencrypted messages if it expects them to be signed or encrypted.
         // Also it will reject the messages if the SAML standard is not strictly
@@ -24,8 +28,8 @@
                 'url' => $spBaseUrl . '/index.php?sls',
             ),
             'NameIDFormat' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
-            'x509cert' => '{{sp_cert}}',
-            'privateKey' => '{{sp_key}}',
+            'x509cert' => $spCrtFile,
+            'privateKey' => $spKeyFile,
         ),
         'idp' => array (
             'entityId' => $idpEntityId,
@@ -35,7 +39,7 @@
             'singleLogoutService' => array (
                 'url' => $idpSLO,
             ),
-            'x509cert' => '{{idp_cert}}',
+            'x509cert' => $idpCertFile,
         ),
         'security' => array (
             'authnRequestsSigned' => true,
