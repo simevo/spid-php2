@@ -2,23 +2,23 @@
 
 class OneloginSamlConfig
 {
-    // Default values
-    var $spBaseUrl = '';
-    var $idpEntityId = '';
-    var $spAcsUrl = null;
-    var $spSloUrl = null;
-    var $idpSSO = null;
-    var $idpSLO = null;
-    var $spKeyFile = 'sp.key';
-    var $spCrtFile = 'sp.crt';
-    var $idpCertFile = '';
+    // Default values SP
+    private $spBaseUrl = null;
+    private $spKeyFile = 'sp.key';
+    private $spCrtFile = 'sp.crt';
+    private $spAcsUrl = null;
+    private $spSloUrl = null;
+    // Default values IDP
+    private $idpEntityId = null;
+    private $idpSSO = null;
+    private $idpSLO = null;
+    private $idpCertFile = null;
 
     function __construct()
     {
+        // Default values
         $this->spAcsUrl = $this->spBaseUrl . '/index.php?acs';
         $this->spSloUrl = $this->spBaseUrl . '/index.php?sls';
-        $this->idpSSO = $this->idpEntityId . '/sso';
-        $this->idpSLO = $this->idpEntityId . '/slo';
     }
 
     public function getSettings()
@@ -67,6 +67,20 @@ class OneloginSamlConfig
     }
 
     public function updateSettings($settings) {
-        
+        foreach ($settings as $key => $value) {
+            if (property_exists($key) && strpos("idp", $key) === false) {
+                $this->{$key} = $value;
+            }
+        }
+        return $this->getSettings();
+    }
+
+    public function updateIdpMetadata($metadata) {
+        foreach ($metadata as $key => $value) {
+            if (property_exists($key) && strpos("idp", $key) !== false) {
+                $this->{$key} = $value;
+            }
+        }
+        return $this->getSettings();
     }
 }

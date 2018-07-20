@@ -25,9 +25,8 @@ class PhpSamlOneLogin implements PhpSamlInterface
     private function init($idpUrl, $settings)
     {
         $settingsHelper = new OneloginSamlConfig();
-        $defaultSettings = $settingsHelper->getSettings();
         if (!is_null($settings)) {
-            $diff = ArrayHelper::array_diff_key_recursive($settings, $defaultSettings);
+            $diff = ArrayHelper::array_diff_key_recursive($settings, get_object_vars($settingsHelper));
             if (!empty($diff)) {
                 $message = "The following keys are invalid for the provided settings array: ";
                 array_walk_recursive($diff, function ($v, $k) {
@@ -35,12 +34,20 @@ class PhpSamlOneLogin implements PhpSamlInterface
                 });
                 throw new Exception($message, 1);
             }
+            $settingsHelper->updateSpSettings($settings);
         }
-        $this->settings = is_null($settings) ? $defaultSettings : array_merge_recursive($defaultSettings, $settings);
         $metadata = IdpHelper::getMetadata($idpUrl);
+        $settingsHelper->updateIdpMetadata($metadata);
 
+        $auth = new OneLogin_Saml2_Auth($settingsHelper->getSettings());
+    }
 
-        $auth = new OneLogin_Saml2_Auth($this->settings);
+    public function isAuthenticated()
+    {
+        if ($auth->isAuthenticated) {
+            return false;
+        }
+        return true;
     }
 
     public function login()
