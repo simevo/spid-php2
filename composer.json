@@ -1,4 +1,5 @@
 {
+    "name": "italia/spid-php2",
     "require": {
         "onelogin/php-saml": "3.0.0.x-dev",
         "twig/twig": "^2.4",
