@@ -8,70 +8,70 @@ Alternative SDK: [spid-php](https://github.com/italia/spid-php) based on [Simple
 
 ## Features
 
-|<img src="https://github.com/italia/spid-graphics/blob/master/spid-logos/spid-logo-c-lb.png?raw=true" width="100" /><br />_Compliance with [SPID regulations](http://www.agid.gov.it/sites/default/files/circolari/spid-regole_tecniche_v1.pdf) (for Service Providers)_|status| comments |
+|<img src="https://github.com/italia/spid-graphics/blob/master/spid-logos/spid-logo-c-lb.png?raw=true" width="100" /><br />_Compliance with [SPID regulations](http://www.agid.gov.it/sites/default/files/circolari/spid-regole_tecniche_v1.pdf) (for Service Providers)_|status (! = TODO)|comments|
 |:---|:---|:---|
-|**Metadata:**||
-|parsing of IdP XML metadata (1.2.2.4)|✓|currently you can configure a single IdP supplying its metedata url in the `idp_metadata_url` key of `config.yml`; the implementation of a workflow to configure the metadata for multiple IdPs is underway, see: #12; the implementation is not currently checking the AgID signature, see: #17 |
-|parsing of AA XML metadata (2.2.4)| | Attribute Authority is unsupported |
-|SP XML metadata generation (1.3.2)|✓| the SP metadata is made available at the `/metadata.php` endpoint; it is currently lacking the `AttributeConsumingService` (#18) and the optional `Organization` key (#19) |
+|**Metadata:**|||
+|parsing of IdP XML metadata (1.2.2.4)|!|currently you can configure a single IdP supplying its metedata url in the `idp_metadata_url` key of `config.yml`; the implementation of a workflow to configure the metadata for multiple IdPs is underway, see: [#12](https://github.com/simevo/spid-php2/issues/12); the implementation is not currently checking the AgID signature, see: [#17](https://github.com/simevo/spid-php2/issues/17)|
+|parsing of AA XML metadata (2.2.4)||Attribute Authority is unsupported|
+|SP XML metadata generation (1.3.2)|!|the SP metadata is made available at the `/metadata.php` endpoint; it is currently lacking the `AttributeConsumingService` ([#18](https://github.com/simevo/spid-php2/issues/18)) and the optional `Organization` key ([#19](https://github.com/simevo/spid-php2/issues/19))|
 |**AuthnRequest generation (1.2.2.1):**|||
-|generation of AuthnRequest XML|✓| the generated AuthnRequest is not 100% compliant, see: #2 |
-|HTTP-Redirect binding|✓| |
-|HTTP-POST binding| ||
-|`AssertionConsumerServiceURL` customization| | the PHP package we are using as a basis for this SDK ([onelogin/php-saml](https://github.com/onelogin/php-saml)) allows customization of the AuthnRequest, but we are not exposing yet this interface; this is tracked in: #21 |
-|`AssertionConsumerServiceIndex` customization| | see: #21 |
-|`AttributeConsumingServiceIndex` customization| | see: #21 |
-|`AuthnContextClassRef` (SPID level) customization| | see: #21 |
-|`RequestedAuthnContext/@Comparison` customization| |
-|`RelayState` customization (1.2.2)| | the RelayState parameter is currently sent in clear, see: #20 |
+|generation of AuthnRequest XML|!|the generated AuthnRequest is not 100% compliant, see: [#2](https://github.com/simevo/spid-php2/issues/2)|
+|HTTP-Redirect binding|✓||
+|HTTP-POST binding|||
+|`AssertionConsumerServiceURL` customization|!|the underlying PHP package we are using as a basis for this SDK ([onelogin/php-saml](https://github.com/onelogin/php-saml)) allows customization of the AuthnRequest, but we are not exposing yet this interface; this is tracked in: [#21](https://github.com/simevo/spid-php2/issues/21)|
+|`AssertionConsumerServiceIndex` customization|!|see: [#21](https://github.com/simevo/spid-php2/issues/21)|
+|`AttributeConsumingServiceIndex` customization|!|see: [#21](https://github.com/simevo/spid-php2/issues/21)|
+|`AuthnContextClassRef` (SPID level) customization|!|see: [#21](https://github.com/simevo/spid-php2/issues/21)|
+|`RequestedAuthnContext/@Comparison` customization|||
+|`RelayState` customization (1.2.2)|!|the RelayState parameter is currently sent in clear, see: [#20](https://github.com/simevo/spid-php2/issues/20)|
 |**Response/Assertion parsing**|||
-|verification of `Response/Signature` value (if any)| | onelogin/php-saml can be configured to request a signed Response (`security.wantMessagesSigned` key) but we are not making use of it ATM, see: #23 |
-|verification of `Response/Signature` certificate (if any) against IdP/<s>AA metadata</s>|✓| the underlying package checks the signature using the certificate found in the IdP metadata (see: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L369) |
-|verification of `Assertion/Signature` value|✓| OK but strict mode must be set see: #22 |
-|verification of `Assertion/Signature` certificate against IdP/<s>AA metadata</s>|✓| the underlying package checks the signature using the certificate found in the IdP metadata (see: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L369) |
-|verification of `SubjectConfirmationData/@Recipient`|✓| the underlying package checks it: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L302 |
-|verification of `SubjectConfirmationData/@NotOnOrAfter`|✓| the underlying package checks it: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L308 |
-|verification of `SubjectConfirmationData/@InResponseTo`|✓| the underlying package checks it: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L296 |
-|verification of `Issuer`|✓| the underlying package checks it:  https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L265 |
-|verification of `Destination`|✓| the underlying package checks it:  https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L227 |
-|verification of `Conditions/@NotBefore`|✓| the underlying package checks it:  https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L909 |
-|verification of `Conditions/@NotOnOrAfter`|✓| the underlying package checks it: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L915 |
-|verification of `Audience`|✓| the underlying package checks it: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L252 |
-|parsing of Response with no `Assertion` (authentication/query failure)|✓| the underlying package checks it: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L783 |
-|parsing of failure `StatusCode` (Requester/Responder)|✓| the underlying package checks it: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L456 |
-|verification of `RelayState` (saml-bindings-2.0-os 3.5.3)|✓| this is currently checked in the user code: https://github.com/simevo/spid-php2/blob/master/www2/index.php#L78 |
-|**Response/Assertion parsing for SSO (1.2.1, 1.2.2.2, 1.3.1):**||
-|parsing of `NameID`|?|
-|parsing of `AuthnContextClassRef` (SPID level)|?|
-|parsing of attributes|?|
-|**Response/Assertion parsing for attribute query (2.2.2.2, 2.3.1):**||
-|parsing of attributes|?|
-|**LogoutRequest generation (for SP-initiated logout):**||
-|generation of LogoutRequest XML|?|
-|HTTP-Redirect binding|✓| |
-|HTTP-POST binding| ||
-|**LogoutResponse parsing (for SP-initiated logout):**||
-|parsing of LogoutResponse XML|?|
-|verification of `Response/Signature` value (if any)|?|
-|verification of `Response/Signature` certificate (if any) against IdP metadata|?|
-|verification of `Issuer`|?|
-|verification of `Destination`|?|
-|PartialLogout detection|?|
+|verification of `Response/Signature` value (if any)|!|the underlying package can be configured to request a signed Response (`security.wantMessagesSigned` key) but we are not making use of it ATM, see: [#23](https://github.com/simevo/spid-php2/issues/23)|
+|verification of `Response/Signature` certificate (if any) against IdP/<s>AA metadata</s>|✓|the underlying package checks the signature using the certificate found in the IdP metadata, see: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L369|
+|verification of `Assertion/Signature` value|!|OK but strict mode must be set, see: [#22](https://github.com/simevo/spid-php2/issues/22)|
+|verification of `Assertion/Signature` certificate against IdP/<s>AA metadata</s>|✓|the underlying package checks the signature using the certificate found in the IdP metadata, see: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L369|
+|verification of `SubjectConfirmationData/@Recipient`|!|the underlying package checks it only if it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L302 but the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
+|verification of `SubjectConfirmationData/@NotOnOrAfter`|!|the underlying package checks it only if it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L308 but the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
+|verification of `SubjectConfirmationData/@InResponseTo`|!|the underlying package checks it only if it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L296 but the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
+|verification of `Issuer`|!|the underlying package checks that if there is any Issuer it is valid: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L265 but the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
+|verification of `Destination`|!|the underlying package checks it only if it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L227 but the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
+|verification of `Conditions/@NotBefore`|!|the underlying package checks it only of it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L909 but the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
+|verification of `Conditions/@NotOnOrAfter`|!|the underlying package checks it only if it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L915 but the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
+|verification of `Audience`|!|the underlying package checks it only if it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L252 but the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
+|parsing of Response with no `Assertion` (authentication/query failure)|✓|the underlying package checks it: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L783|
+|parsing of failure `StatusCode` (Requester/Responder)|!|the underlying package checks it if it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L456 but the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
+|verification of `RelayState` (saml-bindings-2.0-os 3.5.3)|✓|this is currently checked in the user code: https://github.com/simevo/spid-php2/blob/master/www2/index.php#L78|
+|**Response/Assertion parsing for SSO (1.2.1, 1.2.2.2, 1.3.1):**|||
+|parsing of `NameID`|✓|the underlying package offers three functions to access the `NameID`: `getNameId`, `getNameIdFormat` and `getNameIdNameQualifier`, that can be used in the user code: https://github.com/simevo/spid-php2/blob/master/www2/index.php#L74|
+|parsing of `AuthnContextClassRef` (SPID level)|!|to be implemented, see: [#24](https://github.com/simevo/spid-php2/issues/24)|
+|parsing of attributes|✓|the underlying package offers the `getAttributes` function to access the attributes, that can be used in the user code: https://github.com/simevo/spid-php2/blob/master/www2/index.php#L73|
+|**Response/Assertion parsing for attribute query (2.2.2.2, 2.3.1):**|||
+|parsing of attributes||Attribute Authority is unsupported|
+|**LogoutRequest generation (for SP-initiated logout):**|||
+|generation of LogoutRequest XML|✓||
+|HTTP-Redirect binding|✓||
+|HTTP-POST binding|||
+|**LogoutResponse parsing (for SP-initiated logout):**|||
+|parsing of LogoutResponse XML|✓||
+|verification of `LogoutResponse/Signature` value (if any)|!|the underlying package can be configured to request a signed LogoutResponse (`security.wantMessagesSigned` key) but we are not making use of it ATM, see: [#23](https://github.com/simevo/spid-php2/issues/23)|
+|verification of `LogoutResponse/Signature` certificate (if any) against IdP metadata|✓|the underlying package checks the signature using the certificate found in the IdP metadata, see: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/LogoutResponse.php#L180|
+|verification of `Issuer`|!|the underlying package checks it only if it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/LogoutResponse.php#L152, whereas the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
+|verification of `Destination`|!|the underlying package checks it only if it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/LogoutResponse.php#L162, whereas the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
+|PartialLogout detection||the underlying package does not support partial logout|
 |**LogoutRequest parsing (for third-party-initiated logout):**||
-|parsing of LogoutRequest XML|?|
-|verification of `Response/Signature` value (if any)|?|
-|verification of `Response/Signature` certificate (if any) against IdP metadata|?|
-|verification of `Issuer`|?|
-|verification of `Destination`|?|
-|parsing of `NameID`|?|
+|parsing of LogoutRequest XML|✓||
+|verification of `LogoutRequest/Signature` value (if any)|!|the underlying package can be configured to request a signed LogoutRequest (`security.wantMessagesSigned` key) but we are not making use of it ATM, see: [#23](https://github.com/simevo/spid-php2/issues/23)|
+|verification of `LogoutRequest/Signature` certificate (if any) against IdP metadata|✓|the underlying package checks the signature using the certificate found in the IdP metadata, see: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/LogoutRequest.php#L385|
+|verification of `Issuer`|!|the underlying package checks it only if it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/LogoutRequest.php#L370, whereas the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
+|verification of `Destination`|!|the underlying package checks it only if it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/LogoutRequest.php#L358, whereas the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
+|parsing of `NameID`|✓|the underlying package offers the `getNameId` function to access the `NameID`, that could be used in the user code|
 |**LogoutResponse generation (for third-party-initiated logout):**||
-|generation of LogoutResponse XML|?|
-|HTTP-Redirect binding|?|
-|HTTP-POST binding|?|
-|PartialLogout customization|?|
+|generation of LogoutResponse XML|✓||
+|HTTP-Redirect binding|✓||
+|HTTP-POST binding|||
+|PartialLogout customization||the underlying package does not support partial logout|
 |**AttributeQuery generation (2.2.2.1):**||
-|generation of AttributeQuery XML|?|
-|SOAP binding (client)|?|
+|generation of AttributeQuery XML||Attribute Authority is unsupported|
+|SOAP binding (client)||Attribute Authority is unsupported|
 
 ## Prerequisites
 
