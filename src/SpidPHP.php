@@ -4,7 +4,7 @@ namespace SpidPHP;
 use SpidPHP\Strategy\Interfaces\PhpSamlInterface;
 use SpidPHP\Strategy\PhpSamlOneLogin;
 
-class PhpSaml implements PhpSamlInterface
+class SpidPHP implements PhpSamlInterface
 {
 
     private $phpSaml = null;
@@ -17,7 +17,7 @@ class PhpSaml implements PhpSamlInterface
         $this->settings = $settings;
     }
 
-    private function initStrategy($idpName)
+    private function initStrategy($idpName = null)
     {
         switch ($this->mode) {
             case 'onelogin':
@@ -27,6 +27,12 @@ class PhpSaml implements PhpSamlInterface
                 $this->phpSaml = new PhpSamlOneLogin($idpName, $this->settings);
                 break;
         }
+    }
+
+    public function getSPMetadata()
+    {
+        if (is_null($this->phpSaml)) $this->initStrategy();
+        $this->phpSaml->getSPMetadata();
     }
 
     public function getSupportedIdps()
@@ -43,6 +49,7 @@ class PhpSaml implements PhpSamlInterface
     public function login( $idpName, $redirectTo = '', $level = 1 )
     {   
         if (is_null($this->phpSaml)) $this->initStrategy($idpName);
+        return;
         $this->phpSaml->login($redirectTo);
     }
     

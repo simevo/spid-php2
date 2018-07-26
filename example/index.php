@@ -6,7 +6,7 @@
 
 require_once(__DIR__ . "/../vendor/autoload.php");
 
-use SpidPHP\PhpSaml;
+use SpidPHP\SpidPHP;
 $base = "http://sp.simevo.com:8000";
 $settings = [
         'spBaseUrl' => $base,
@@ -17,10 +17,11 @@ $settings = [
         'spSloUrl' => $base."/index.php?slo"
     ];
 
-$onelogin = new PhpSaml($settings);
-$result = $onelogin->login("testenv2");
+$onelogin = new SpidPHP($settings);
+//$result = $onelogin->login("testenv2");
 
-var_dump($result);
+$metadata = $onelogin->getSPMetadata();
+
 //if (!$onelogin->isAuthenticated()) $onelogin->login();
 
 //if ($onelogin->login()) $onelogin->logout();

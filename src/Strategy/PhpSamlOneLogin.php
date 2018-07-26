@@ -10,21 +10,30 @@ use SpidPHP\Config\OneloginSamlConfig;
 
 use OneLogin\Saml2\Auth;
 use OneLogin\Saml2\Utils;
+use OneLogin\Saml2\Settings;
 
 class PhpSamlOneLogin implements PhpSamlInterface
 {
-    private $auth;
+    private $idpName = null;
+    private $settings = null;
 
-    function __construct($idpName, $settings)
+    private $auth;
+    private $settingsHelper;
+    private $oneloginSettings;
+
+    function __construct($idpName = null, $settings)
     {
-        $this->init($idpName, $settings);
+        $this->idpName = $idpName ?? "testenv2";
+        $this->settings = $settings;
+        $this->init();
     }
 
-    private function init($idpName, $settings)
+    private function init()
     {
         $settingsHelper = new OneloginSamlConfig();
-        if (!is_null($settings)) {
-            $diff = ArrayHelper::array_diff_key_recursive($settings, get_object_vars($settingsHelper));
+        $this->settingsHelper = $settingsHelper;
+        if (!is_null($this->settings)) {
+            $diff = ArrayHelper::array_diff_key_recursive($this->settings, get_object_vars($settingsHelper));
             if (!empty($diff)) {
                 $message = "The following keys are invalid for the provided settings array: ";
                 $first = true;
@@ -35,10 +44,36 @@ class PhpSamlOneLogin implements PhpSamlInterface
                 }
                 throw new \Exception($message, 1);
             }
-            $settingsHelper->updateSettings($settings);
+            $settingsHelper->updateSettings($this->settings);
         }
-        $settingsHelper->updateIdpMetadata($idpName);
-        $this->auth = new Auth($settingsHelper->getSettings());
+        
+        $this->settingsHelper->updateIdpMetadata($this->idpName);
+        $this->settings = new Settings($this->settingsHelper->getSettings());
+        $this->auth = new Auth($this->settingsHelper->getSettings());
+    }
+
+    private function rebuildPhpSamlOnelogin($idpName)
+    {
+        if ($this->idpName != $idpName) {
+            $this->idpName = $idpName;
+            $this->init();
+        }
+    }
+
+    public function getSPMetadata()
+    {
+        $oneloginSettings = new Settings($this->settings->getSettings());
+        $metadata = $oneloginSettings->getSPMetadata();
+        var_dump($oneloginSettings);
+        die();
+        $errors = $oneloginSettings->validateMetadata($metadata);
+        if (!empty($errors)) {
+            throw new OneLogin_Saml2_Error(
+                'Invalid SP metadata: '.implode(', ', $errors),
+                OneLogin_Saml2_Error::METADATA_SP_INVALID
+            );
+        }
+        return $metadata;
     }
 
     public function getSupportedIdps()
@@ -48,7 +83,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function isAuthenticated()
     {
-        if ($auth->isAuthenticated) {
+        if ($this->auth->isAuthenticated) {
             return false;
         }
         return true;
@@ -56,6 +91,8 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function login( $idpName, $redirectTo = '', $level = 1 )
     {
+        $this->rebuildPhpSamlOnelogin($idpName);
+
         if ($this->auth->isAuthenticated()) {
             return false;
         }
