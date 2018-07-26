@@ -39,7 +39,8 @@ class PhpSamlOneLogin implements PhpSamlInterface
             $settingsHelper->updateSettings($settings);
         }
         $settingsHelper->updateIdpMetadata($idpName);
-        $this->auth = new OneLogin_Saml2_Auth($settingsHelper->getSettings());
+        print_r($settingsHelper->getSettings()); die();
+        $this->auth = new Auth($settingsHelper->getSettings());
     }
 
     public function getSupportedIdps()

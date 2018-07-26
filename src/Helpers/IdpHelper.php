@@ -6,15 +6,16 @@ class IdpHelper
 {
     public static function getMetadata($idpName)
     {
-        if (!file_exists("../config/idp/" . $idpName)) {
+        if (!file_exists(__DIR__ . "/../config/idp/" . $idpName . ".xml")) {
             throw new \Exception("Invalid IDP Requested", 1);
         }
-        $xml = simplexml_load_file("../config/idp/" . $idpName . '.xml');
+        $xml = simplexml_load_file(__DIR__ . "/../config/idp/" . $idpName . '.xml');
+        
         $metadata = array();
-        $metadata['idp_entityid'] = $xml->xpath('//ns0:EntityDescriptor/@entityID')[0];
-        $metadata['idp_sso'] = $xml->xpath('//ns0:SingleSignOnService/@Location')[0];
-        $metadata['idp_slo'] = $xml->xpath('//ns0:SingleLogoutService/@Location')[0];
-        $metadata['idp_cert'] = $xml->xpath('//ns1:X509Certificate')[0];
+        $metadata['idpEntityId'] = $xml->attributes()->entityID;
+        $metadata['idpSSO'] = $xml->xpath('//SingleSignOnService')[0]->attributes()->Location;
+        $metadata['idpSLO'] = $xml->xpath('//SingleLogoutService')[0]->attributes()->Location;
+        $metadata['idpCertValue'] = $xml->xpath('//X509Certificate')[0];
         
         return $metadata;
     }

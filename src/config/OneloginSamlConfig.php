@@ -21,9 +21,9 @@ class OneloginSamlConfig
     var $idpEntityId = null;
     var $idpSSO = null;
     var $idpSLO = null;
-    var $idpCertFile = null;
+    var $idpCertValue = null;
 
-    private $is_not_updatable = ['spKeyFileValue', 'spCrtFileValue', 'idpEntityId', 'idpSSO', 'idpSLO', 'idpCertFile'];
+    private $is_not_updatable = ['spKeyFileValue', 'spCrtFileValue', 'idpEntityId', 'idpSSO', 'idpSLO', 'idpCertValue'];
 
     function __construct()
     {
@@ -65,7 +65,7 @@ class OneloginSamlConfig
                 'singleLogoutService' => array(
                     'url' => $this->idpSLO,
                 ),
-                'x509cert' => $this->idpCertFile,
+                'x509cert' => $this->idpCertValue,
             ),
             'security' => array(
                 'authnRequestsSigned' => true,
@@ -102,7 +102,7 @@ class OneloginSamlConfig
     public function updateIdpMetadata($idpName) {
         $metadata = IdpHelper::getMetadata($idpName);
         foreach ($metadata as $key => $value) {
-            if (property_exists(OneloginSamlConfig::class, $key) && strpos("idp", $key) !== false) {
+            if (property_exists(OneloginSamlConfig::class, $key) && strpos($key, "idp") !== false) {
                 $this->{$key} = $value;
             }
         }
