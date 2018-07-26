@@ -1,5 +1,7 @@
 <?php
 
+namespace SpidPHP\Config;
+
 class OneloginSamlConfig
 {
     // Default values SP
@@ -30,7 +32,7 @@ class OneloginSamlConfig
             // or unencrypted messages if it expects them to be signed or encrypted.
             // Also it will reject the messages if the SAML standard is not strictly
             // followed: Destination, NameId, Conditions ... are validated too.
-            'strict' => false,
+            'strict' => true,
     
             // Enable debug mode (to print errors).
             'debug' => true,
@@ -70,7 +72,8 @@ class OneloginSamlConfig
 
     public function updateSettings($settings) {
         foreach ($settings as $key => $value) {
-            if (property_exists($key) && strpos("idp", $key) === false) {
+            // do not update idp os sp cert file values, they are updated in their own method
+            if (property_exists($key) && strpos("idp", $key) === false && strpos("file", $key) === false) {
                 $this->{$key} = $value;
             }
         }

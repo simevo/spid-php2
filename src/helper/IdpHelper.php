@@ -1,5 +1,7 @@
 <?php
 
+namespace SpidPHP\Helpers;
+
 class IdpHelper
 {
     public static function getMetadata($idpName)

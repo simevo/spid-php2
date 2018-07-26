@@ -1,5 +1,7 @@
 <?php
 
+namespace SpidPHP\Helpers;
+
 class SpHelper
 {
     public static function getSpCert($sp_key_file, $sp_cert_file)

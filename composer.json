@@ -12,9 +12,11 @@
         ],
         "post-update-cmd": [
             "setup\\Configuration::setup"
-        ],
+        ], 
         "autoload": {
-            "classmap": ["bin/"]
-        }   
+            "psr-4": {
+                "SpidPHP\\": "src/"
+            }
+        }
     }
 }

@@ -1,8 +1,12 @@
 <?php
-require_once('PhpSamlInterface.php');
-require_once(__DIR__ . '/../helper/ArrayHelper.php');
-require_once(__DIR__ . '/../helper/IdpHelper.php');
-require_once(__DIR__ . '/../config/OneloginSamlConfig.php');
+
+namespace SpidPHP\Strategy;
+
+use SpidPHP\Strategy\Interfaces\PhpSamlInterface;
+use SpidPHP\Helpers\ArrayHelper;
+use SpidPHP\Helpers\IdpHelper;
+use SpidPHP\Helpers\SpHelper;
+use SpidPHP\Config\OneloginSamlConfig;
 
 use OneLogin\Saml2\Auth;
 use OneLogin\Saml2\Utils;

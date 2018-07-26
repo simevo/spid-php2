@@ -1,5 +1,7 @@
 <?php
 
+namespace SpidPHP\Helpers;
+
 class ArrayHelper
 {
     public static function array_diff_key_recursive(array $arr1, array $arr2)

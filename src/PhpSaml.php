@@ -1,5 +1,10 @@
 <?php
 
+namespace SpidPHP;
+
+use SpidPHP\Strategy\Interfaces\PhpSamlInterface;
+use SpidPHP\Strategy\PhpSamlOneLogin;
+
 class PhpSaml implements PhpSamlInterface
 {
 
