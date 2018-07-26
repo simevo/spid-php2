@@ -7,7 +7,7 @@ class IdpHelper
     public static function getMetadata($idpName)
     {
         if (!file_exists("../config/idp/" . $idpName)) {
-            throw new Exception("Invalid IDP Requested", 1);
+            throw new \Exception("Invalid IDP Requested", 1);
         }
         $xml = simplexml_load_file("../config/idp/" . $idpName . '.xml');
         $metadata = array();

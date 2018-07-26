@@ -9,19 +9,19 @@ use SpidPHP\Helpers\IdpHelper;
 class OneloginSamlConfig
 {
     // Default values SP
-    private $spBaseUrl = '';
-    private $spEntityId = null;
-    private $spKeyFile = 'sp.key';
-    private $spCrtFile = 'sp.crt';
+    var $spBaseUrl = '';
+    var $spEntityId = null;
+    var $spKeyFile = 'sp.key';
+    var $spCrtFile = 'sp.crt';
     private $spKeyFileValue = null;
     private $spCrtFileValue = null;
-    private $spAcsUrl = null;
-    private $spSloUrl = null;
+    var $spAcsUrl = null;
+    var $spSloUrl = null;
     // Default values IDP
-    private $idpEntityId = null;
-    private $idpSSO = null;
-    private $idpSLO = null;
-    private $idpCertFile = null;
+    var $idpEntityId = null;
+    var $idpSSO = null;
+    var $idpSLO = null;
+    var $idpCertFile = null;
 
     private $is_not_updatable = ['spKeyFileValue', 'spCrtFileValue', 'idpEntityId', 'idpSSO', 'idpSLO', 'idpCertFile'];
 
@@ -81,7 +81,7 @@ class OneloginSamlConfig
     public function updateSettings($settings) {
         foreach ($settings as $key => $value) {
             // do not update idp os sp cert file values, they are updated in their own method
-            if (!property_exists($key)) {
+            if (!property_exists(OneloginSamlConfig::class, $key)) {
                 continue;
             }
             if (in_array($key, $this->is_not_updatable)) {
@@ -92,7 +92,7 @@ class OneloginSamlConfig
         }
         // Get .key and .cert files content and add it to configuration
         if (!file_exists($this->spKeyFile) || !file_exists($this->spCrtFile)) {
-            throw new Exception("The path for .key and .cert files is invalid", 1);
+            throw new \Exception("The path for .key and .cert files is invalid", 1);
         }
         $sp = SpHelper::getSpCert($this->spKeyFile, $this->spCrtFile);
         $this->updateSpData($sp);
@@ -102,7 +102,7 @@ class OneloginSamlConfig
     public function updateIdpMetadata($idpName) {
         $metadata = IdpHelper::getMetadata($idpName);
         foreach ($metadata as $key => $value) {
-            if (property_exists($key) && strpos("idp", $key) !== false) {
+            if (property_exists(OneloginSamlConfig::class, $key) && strpos("idp", $key) !== false) {
                 $this->{$key} = $value;
             }
         }
@@ -111,7 +111,7 @@ class OneloginSamlConfig
 
     public function updateSpData($sp) {
         if (!is_array($sp)) 
-            throw new Exception("Invalid SP certificate data provided", 1);
+            throw new \Exception("Invalid SP certificate data provided", 1);
 
         $this->spKeyFile = $sp['key'];    
         $this->spCrtFile = $sp['cert'];

@@ -12,11 +12,11 @@
         ],
         "post-update-cmd": [
             "setup\\Configuration::setup"
-        ], 
-        "autoload": {
-            "psr-4": {
-                "SpidPHP\\": "src/"
-            }
+        ]
+    }, 
+    "autoload": {
+        "psr-4": {
+            "SpidPHP\\": "src/"
         }
     }
 }

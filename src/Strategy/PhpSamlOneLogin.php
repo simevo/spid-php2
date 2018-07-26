@@ -13,38 +13,42 @@ use OneLogin\Saml2\Utils;
 
 class PhpSamlOneLogin implements PhpSamlInterface
 {
-
-    private $settings;
     private $auth;
 
-    function __construct($settings)
+    function __construct($idpName, $settings)
     {
-        $this->settings = $settings;
-        $this->init($settings);
+        $this->init($idpName, $settings);
         print_r($this->settings);
     }
 
-    private function init($idpName)
+    private function init($idpName, $settings)
     {
         $settingsHelper = new OneloginSamlConfig();
-        if (!is_null($this->settings)) {
-            $diff = ArrayHelper::array_diff_key_recursive($this->settings, get_object_vars($settingsHelper));
+        if (!is_null($settings)) {
+            $diff = ArrayHelper::array_diff_key_recursive($settings, get_object_vars($settingsHelper));
             if (!empty($diff)) {
                 $message = "The following keys are invalid for the provided settings array: ";
-                array_walk_recursive($diff, function ($v, $k) {
-                    $message .= $k . ", ";
-                });
-                throw new Exception($message, 1);
+                $first = true;
+                foreach ($diff as $key => $value) {
+                    if ($first) $message .= $key;
+                    $first = false;
+                    $message .= ", " . $key;
+                }
+                throw new \Exception($message, 1);
             }
-            $settingsHelper->updateSettings($this->settings);
+            $settingsHelper->updateSettings($settings);
         }
         $settingsHelper->updateIdpMetadata($idpName);
         $this->auth = new OneLogin_Saml2_Auth($settingsHelper->getSettings());
     }
 
+    public function getSupportedIdps()
+    {
+        return array();
+    }
+
     public function isAuthenticated()
     {
-        if (is_null($this->auth)) return false;
         if ($auth->isAuthenticated) {
             return false;
         }
@@ -53,7 +57,6 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function login( $idpName, $redirectTo = null, $level = 1 )
     {
-        if (is_null($this->auth)) $this->init($idpName);
         if ($auth->isAuthenticated) {
             return false;
         }
@@ -90,7 +93,6 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function logout()
     {
-        if (is_null($this->auth)) return false;
         if (!$auth->isAuthenticated()) {
             return false;
         }

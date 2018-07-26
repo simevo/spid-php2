@@ -1,5 +1,4 @@
 <?php
-
 namespace SpidPHP;
 
 use SpidPHP\Strategy\Interfaces\PhpSamlInterface;
@@ -14,24 +13,18 @@ class PhpSaml implements PhpSamlInterface
 
     public function __construct($settings = null, $mode = 'onelogin')
     {
-        /*
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        */
-
         $this->mode = $mode;
         $this->settings = $settings;
     }
 
-    private function initStrategy()
+    private function initStrategy($idpName)
     {
         switch ($this->mode) {
             case 'onelogin':
-                $this->phpSaml = new PhpSamlOneLogin($this->settings);
+                $this->phpSaml = new PhpSamlOneLogin($idpName, $this->settings);
                 break;
             default:
-                $this->phpSaml = new PhpSamlOneLogin($this->settings);
+                $this->phpSaml = new PhpSamlOneLogin($idpName, $this->settings);
                 break;
         }
     }
@@ -42,17 +35,21 @@ class PhpSaml implements PhpSamlInterface
     }
 
     public function isAuthenticated()
-    {
+    {   
+        if (is_null($this->phpSaml)) return false;
         $this->phpSaml->isAuthenticated();
     }
 
     public function login( $idpName, $redirectTo = null, $level = 1 )
     {   
-        $this->phpSaml->login();
+        if (is_null($this->phpSaml)) $this->initStrategy($idpName);
+        die();
+        $this->phpSaml->login($redirectTo);
     }
     
     public function logout()
     {
+        if (is_null($this->phpSaml)) return false;
         $this->phpSaml->logout();
     }
 

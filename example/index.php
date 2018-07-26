@@ -3,27 +3,22 @@
 /**
  *  SAML Handler
  */
-session_start();
 
-require_once("../vendor/autoload.php");
+require_once(__DIR__ . "/../vendor/autoload.php");
 
 use SpidPHP\PhpSaml;
 
 $settings = [
-        'sp' => array(
-            'entityId' => $this->spEntityId,
-            'assertionConsumerService' => array(
-                'url' => $this->spAcsUrl,
-            ),
-            'singleLogoutService' => array(
-                'url' => $this->spSloUrl,
-            ),
-            'NameIDFormat' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
-        ),
+        'spBaseUrl' => "BASE URL",
+        'spEntityId' => "ENTITY ID",
+        'spKeyFile' => __DIR__ . "/../sp.key",
+        'spCrtFile' => __DIR__ . "/../sp.crt",
     ];
 
-$onelogin = new PhpSaml("http://idp.simevo.com", "/sp.key", "/sp.crt", $settings);
+    print_r($settings);
 
-if (!$onelogin->isAuthenticated()) $onelogin->login();
+$onelogin = new PhpSaml($settings);
+$onelogin->login("nome");
+//if (!$onelogin->isAuthenticated()) $onelogin->login();
 
-if ($onelogin->login()) $onelogin->logout();
+//if ($onelogin->login()) $onelogin->logout();
