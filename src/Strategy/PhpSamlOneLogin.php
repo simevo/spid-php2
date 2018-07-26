@@ -18,7 +18,6 @@ class PhpSamlOneLogin implements PhpSamlInterface
     function __construct($idpName, $settings)
     {
         $this->init($idpName, $settings);
-        print_r($this->settings);
     }
 
     private function init($idpName, $settings)
@@ -39,7 +38,6 @@ class PhpSamlOneLogin implements PhpSamlInterface
             $settingsHelper->updateSettings($settings);
         }
         $settingsHelper->updateIdpMetadata($idpName);
-        print_r($settingsHelper->getSettings()); die();
         $this->auth = new Auth($settingsHelper->getSettings());
     }
 
@@ -58,32 +56,32 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function login( $idpName, $redirectTo = null, $level = 1 )
     {
-        if ($auth->isAuthenticated) {
+        if ($this->auth->isAuthenticated) {
             return false;
         }
-        $auth->login();
+        $this->auth->login();
 
         $requestID = null;
         if (isset($_SESSION['AuthNRequestID'])) {
             $requestID = $_SESSION['AuthNRequestID'];
         }
 
-        $auth->processResponse($requestID);
+        $this->auth->processResponse($requestID);
         unset($_SESSION['AuthNRequestID']);
 
-        $errors = $auth->getErrors();
+        $errors = $this->auth->getErrors();
         if (!empty($errors)) {
             return $errors;
         }
 
-        if (!$auth->isAuthenticated()) {
+        if (!$this->auth->isAuthenticated()) {
             return false;
         }
 
-        $_SESSION['samlUserdata'] = $auth->getAttributes();
-        $_SESSION['samlNameId'] = $auth->getNameId();
-        $_SESSION['samlNameIdFormat'] = $auth->getNameIdFormat();
-        $_SESSION['samlSessionIndex'] = $auth->getSessionIndex();
+        $_SESSION['samlUserdata'] = $this->auth->getAttributes();
+        $_SESSION['samlNameId'] = $this->auth->getNameId();
+        $_SESSION['samlNameIdFormat'] = $this->auth->getNameIdFormat();
+        $_SESSION['samlSessionIndex'] = $this->auth->getSessionIndex();
 
         if (!empty($_SESSION['samlUserdata'])) {
             return true;
@@ -94,13 +92,13 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function logout()
     {
-        if (!$auth->isAuthenticated()) {
+        if (!$this->auth->isAuthenticated()) {
             return false;
         }
-        $auth->logout();
-        $auth->processSLO();
+        $this->auth->logout();
+        $this->auth->processSLO();
 
-        $errors = $auth->getErrors();
+        $errors = $this->auth->getErrors();
         if (!empty($errors)) {
             return $errors;
         }

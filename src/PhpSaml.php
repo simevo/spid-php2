@@ -43,7 +43,6 @@ class PhpSaml implements PhpSamlInterface
     public function login( $idpName, $redirectTo = null, $level = 1 )
     {   
         if (is_null($this->phpSaml)) $this->initStrategy($idpName);
-        die();
         $this->phpSaml->login($redirectTo);
     }
     

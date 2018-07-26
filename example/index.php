@@ -7,14 +7,14 @@
 require_once(__DIR__ . "/../vendor/autoload.php");
 
 use SpidPHP\PhpSaml;
-
+$base = "http://sp.simevo.com:8000";
 $settings = [
-        'spBaseUrl' => "sp.simevo.com:8000",
-        'spEntityId' => "sp.simevo.com:8000/metadata.php",
+        'spBaseUrl' => $base,
+        'spEntityId' => $base."/metadata.php",
         'spKeyFile' => __DIR__ . "/../sp.key",
         'spCrtFile' => __DIR__ . "/../sp.crt",
-        'spAcsUrl' => "sp.simevo.com:8000/index.php?acs",
-        'spSloUrl' => "sp.simevo.com:8000/index.php?slo"
+        'spAcsUrl' => $base."/index.php?acs",
+        'spSloUrl' => $base."/index.php?slo"
     ];
 
     print_r($settings);
