@@ -13,16 +13,16 @@ class PhpSamlOneLogin implements PhpSamlInterface
     var $settings;
     var $auth;
 
-    function __construct($idpUrl, $settings = null)
+    function __construct($idpName, $settings = null)
     {
-        if (filter_var($idpUrl, FILTER_VALIDATE_URL)) {
+        if (filter_var($idpName, FILTER_VALIDATE_URL)) {
             throw new Exception("The provided idp URL is not a valid URL", 1);
         }
-        $this->init($idpUrl, $settings);
+        $this->init($idpName, $settings);
         print_r($this->settings);
     }
 
-    private function init($idpUrl, $settings)
+    private function init($idpName, $settings)
     {
         $settingsHelper = new OneloginSamlConfig();
         if (!is_null($settings)) {
@@ -36,7 +36,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
             }
             $settingsHelper->updateSpSettings($settings);
         }
-        $metadata = IdpHelper::getMetadata($idpUrl);
+        $metadata = IdpHelper::getMetadata($idpName);
         $settingsHelper->updateIdpMetadata($metadata);
 
         $auth = new OneLogin_Saml2_Auth($settingsHelper->getSettings());

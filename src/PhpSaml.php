@@ -1,11 +1,11 @@
 <?php
 
-class PhpSaml implements PhpSamlInterdface
+class PhpSaml implements PhpSamlInterface
 {
 
     private $phpSaml = null;
 
-    public function __construct($idpUrl, $settings = null, $mode = 'onelogin')
+    public function __construct($idpName, $settings = null, $mode = 'onelogin')
     {
 
         if (session_status() == PHP_SESSION_NONE) {
@@ -14,10 +14,10 @@ class PhpSaml implements PhpSamlInterdface
 
         switch ($mode) {
             case 'onelogin':
-                $this->phpSaml = new PhpSamlOneLogin($idpUrl, $settings);
+                $this->phpSaml = new PhpSamlOneLogin($idpName, $settings);
                 break;
             default:
-                $this->phpSaml = new PhpSamlOneLogin($idpUrl, $settings);
+                $this->phpSaml = new PhpSamlOneLogin($idpName, $settings);
                 break;
         }
     }
