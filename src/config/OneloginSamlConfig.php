@@ -3,7 +3,8 @@
 class OneloginSamlConfig
 {
     // Default values SP
-    private $spBaseUrl = null;
+    private $spBaseUrl = '';
+    private $spEntityId = null;
     private $spKeyFile = 'sp.key';
     private $spCrtFile = 'sp.crt';
     private $spAcsUrl = null;
@@ -19,6 +20,7 @@ class OneloginSamlConfig
         // Default values
         $this->spAcsUrl = $this->spBaseUrl . '/index.php?acs';
         $this->spSloUrl = $this->spBaseUrl . '/index.php?sls';
+        $this->spEntityId = $this->spBaseUrl . '/metadata.php';
     }
 
     public function getSettings()
@@ -34,26 +36,26 @@ class OneloginSamlConfig
             'debug' => true,
 
             'sp' => array(
-                'entityId' => $spBaseUrl . '/metadata.php',
+                'entityId' => $this->spEntityId,
                 'assertionConsumerService' => array(
-                    'url' => $spAcsUrl,
+                    'url' => $this->spAcsUrl,
                 ),
                 'singleLogoutService' => array(
-                    'url' => $spSloUrl,
+                    'url' => $this->spSloUrl,
                 ),
                 'NameIDFormat' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
-                'x509cert' => $spCrtFile,
-                'privateKey' => $spKeyFile,
+                'x509cert' => $this->spCrtFile,
+                'privateKey' => $this->spKeyFile,
             ),
             'idp' => array(
-                'entityId' => $idpEntityId,
+                'entityId' => $this->idpEntityId,
                 'singleSignOnService' => array(
-                    'url' => $idpSSO,
+                    'url' => $this->idpSSO,
                 ),
                 'singleLogoutService' => array(
-                    'url' => $idpSLO,
+                    'url' => $this->idpSLO,
                 ),
-                'x509cert' => $idpCertFile,
+                'x509cert' => $this->idpCertFile,
             ),
             'security' => array(
                 'authnRequestsSigned' => true,
@@ -81,6 +83,16 @@ class OneloginSamlConfig
                 $this->{$key} = $value;
             }
         }
+        return $this->getSettings();
+    }
+
+    public function updateSpData($sp) {
+        if (!is_array($sp)) 
+            throw new Exception("Invalid SP certificate data provided", 1);
+
+        $this->spKeyFile = $sp['key'];    
+        $this->spCrtFile = $sp['cert'];
+
         return $this->getSettings();
     }
 }
