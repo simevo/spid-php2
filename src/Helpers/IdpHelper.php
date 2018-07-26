@@ -12,10 +12,10 @@ class IdpHelper
         $xml = simplexml_load_file(__DIR__ . "/../config/idp/" . $idpName . '.xml');
         
         $metadata = array();
-        $metadata['idpEntityId'] = $xml->attributes()->entityID;
-        $metadata['idpSSO'] = $xml->xpath('//SingleSignOnService')[0]->attributes()->Location;
-        $metadata['idpSLO'] = $xml->xpath('//SingleLogoutService')[0]->attributes()->Location;
-        $metadata['idpCertValue'] = $xml->xpath('//X509Certificate')[0];
+        $metadata['idpEntityId'] = $xml->attributes()->entityID->__toString();
+        $metadata['idpSSO'] = $xml->xpath('//SingleSignOnService')[0]->attributes()->Location->__toString();
+        $metadata['idpSLO'] = $xml->xpath('//SingleLogoutService')[0]->attributes()->Location->__toString();
+        $metadata['idpCertValue'] = $xml->xpath('//X509Certificate')[0]->__toString();
         
         return $metadata;
     }

@@ -54,13 +54,14 @@ class PhpSamlOneLogin implements PhpSamlInterface
         return true;
     }
 
-    public function login( $idpName, $redirectTo = null, $level = 1 )
+    public function login( $idpName, $redirectTo = '', $level = 1 )
     {
-        if ($this->auth->isAuthenticated) {
+        if ($this->auth->isAuthenticated()) {
             return false;
         }
-        $this->auth->login();
-
+        
+        $this->auth->login($redirectTo);
+        
         $requestID = null;
         if (isset($_SESSION['AuthNRequestID'])) {
             $requestID = $_SESSION['AuthNRequestID'];

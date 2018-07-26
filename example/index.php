@@ -17,10 +17,10 @@ $settings = [
         'spSloUrl' => $base."/index.php?slo"
     ];
 
-    print_r($settings);
-
 $onelogin = new PhpSaml($settings);
-$onelogin->login("testenv2");
+$result = $onelogin->login("testenv2");
+
+var_dump($result);
 //if (!$onelogin->isAuthenticated()) $onelogin->login();
 
 //if ($onelogin->login()) $onelogin->logout();

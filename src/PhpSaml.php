@@ -40,7 +40,7 @@ class PhpSaml implements PhpSamlInterface
         $this->phpSaml->isAuthenticated();
     }
 
-    public function login( $idpName, $redirectTo = null, $level = 1 )
+    public function login( $idpName, $redirectTo = '', $level = 1 )
     {   
         if (is_null($this->phpSaml)) $this->initStrategy($idpName);
         $this->phpSaml->login($redirectTo);
