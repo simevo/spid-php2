@@ -9,22 +9,36 @@ class PhpSaml implements PhpSamlInterface
 {
 
     private $phpSaml = null;
+    private $mode = null;
+    private $settings = null;
 
-    public function __construct($idpMetadataFile, $spCertFile, $spKeyFile, $settings = null, $mode = 'onelogin')
+    public function __construct($settings = null, $mode = 'onelogin')
     {
-
+        /*
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
+        */
 
-        switch ($mode) {
+        $this->mode = $mode;
+        $this->settings = $settings;
+    }
+
+    private function initStrategy()
+    {
+        switch ($this->mode) {
             case 'onelogin':
-                $this->phpSaml = new PhpSamlOneLogin($idpMetadataFile, $spCertFile, $spKeyFile, $settings);
+                $this->phpSaml = new PhpSamlOneLogin($this->settings);
                 break;
             default:
-                $this->phpSaml = new PhpSamlOneLogin($idpMetadataFile, $spCertFile, $spKeyFile, $settings);
+                $this->phpSaml = new PhpSamlOneLogin($this->settings);
                 break;
         }
+    }
+
+    public function getSupportedIdps()
+    {
+        return array();
     }
 
     public function isAuthenticated()
@@ -32,8 +46,8 @@ class PhpSaml implements PhpSamlInterface
         $this->phpSaml->isAuthenticated();
     }
 
-    public function login()
-    {
+    public function login( $idpName, $redirectTo = null, $level = 1 )
+    {   
         $this->phpSaml->login();
     }
     

@@ -2,6 +2,10 @@
 
 namespace SpidPHP\Config;
 
+use SpidPHP\Helpers\SpHelper;
+use SpidPHP\Helpers\IdpHelper;
+
+
 class OneloginSamlConfig
 {
     // Default values SP
@@ -9,6 +13,8 @@ class OneloginSamlConfig
     private $spEntityId = null;
     private $spKeyFile = 'sp.key';
     private $spCrtFile = 'sp.crt';
+    private $spKeyFileValue = null;
+    private $spCrtFileValue = null;
     private $spAcsUrl = null;
     private $spSloUrl = null;
     // Default values IDP
@@ -16,6 +22,8 @@ class OneloginSamlConfig
     private $idpSSO = null;
     private $idpSLO = null;
     private $idpCertFile = null;
+
+    private $is_not_updatable = ['spKeyFileValue', 'spCrtFileValue', 'idpEntityId', 'idpSSO', 'idpSLO', 'idpCertFile'];
 
     function __construct()
     {
@@ -27,7 +35,7 @@ class OneloginSamlConfig
 
     public function getSettings()
     {
-        return $defaultSettings = array(
+        return array(
             // If 'strict' is True, then the PHP Toolkit will reject unsigned
             // or unencrypted messages if it expects them to be signed or encrypted.
             // Also it will reject the messages if the SAML standard is not strictly
@@ -73,14 +81,26 @@ class OneloginSamlConfig
     public function updateSettings($settings) {
         foreach ($settings as $key => $value) {
             // do not update idp os sp cert file values, they are updated in their own method
-            if (property_exists($key) && strpos("idp", $key) === false && strpos("file", $key) === false) {
-                $this->{$key} = $value;
+            if (!property_exists($key)) {
+                continue;
             }
+            if (in_array($key, $this->is_not_updatable)) {
+                continue;
+            }
+
+            $this->{$key} = $value;
         }
+        // Get .key and .cert files content and add it to configuration
+        if (!file_exists($this->spKeyFile) || !file_exists($this->spCrtFile)) {
+            throw new Exception("The path for .key and .cert files is invalid", 1);
+        }
+        $sp = SpHelper::getSpCert($this->spKeyFile, $this->spCrtFile);
+        $this->updateSpData($sp);
         return $this->getSettings();
     }
 
-    public function updateIdpMetadata($metadata) {
+    public function updateIdpMetadata($idpName) {
+        $metadata = IdpHelper::getMetadata($idpName);
         foreach ($metadata as $key => $value) {
             if (property_exists($key) && strpos("idp", $key) !== false) {
                 $this->{$key} = $value;

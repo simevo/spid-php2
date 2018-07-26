@@ -14,23 +14,21 @@ use OneLogin\Saml2\Utils;
 class PhpSamlOneLogin implements PhpSamlInterface
 {
 
-    var $settings;
-    var $auth;
+    private $settings;
+    private $auth;
 
-    function __construct($idpMetadataFile, $spCertFile, $spKeyFile, $settings = null)
+    function __construct($settings)
     {
-        if (filter_var($idpMetadataFile, FILTER_VALIDATE_URL)) {
-            throw new Exception("The provided idp URL is not a valid URL", 1);
-        }
-        $this->init($idpMetadataFile, $spCertFile, $spKeyFile, $settings);
+        $this->settings = $settings;
+        $this->init($settings);
         print_r($this->settings);
     }
 
-    private function init($idpMetadataFile, $spCertFile, $spKeyFile, $settings)
+    private function init($idpName)
     {
         $settingsHelper = new OneloginSamlConfig();
-        if (!is_null($settings)) {
-            $diff = ArrayHelper::array_diff_key_recursive($settings, get_object_vars($settingsHelper));
+        if (!is_null($this->settings)) {
+            $diff = ArrayHelper::array_diff_key_recursive($this->settings, get_object_vars($settingsHelper));
             if (!empty($diff)) {
                 $message = "The following keys are invalid for the provided settings array: ";
                 array_walk_recursive($diff, function ($v, $k) {
@@ -38,27 +36,24 @@ class PhpSamlOneLogin implements PhpSamlInterface
                 });
                 throw new Exception($message, 1);
             }
-            $settingsHelper->updateSpSettings($settings);
+            $settingsHelper->updateSettings($this->settings);
         }
-        $metadata = IdpHelper::getMetadata($idpMetadataFile);
-        $settingsHelper->updateIdpMetadata($metadata);
-
-        $sp = SpHelper::getSpCert($spCertFile, $spKeyFile);
-        $settingsHelper->updateSpData($sp);
-
-        $auth = new OneLogin_Saml2_Auth($settingsHelper->getSettings());
+        $settingsHelper->updateIdpMetadata($idpName);
+        $this->auth = new OneLogin_Saml2_Auth($settingsHelper->getSettings());
     }
 
     public function isAuthenticated()
     {
+        if (is_null($this->auth)) return false;
         if ($auth->isAuthenticated) {
             return false;
         }
         return true;
     }
 
-    public function login()
+    public function login( $idpName, $redirectTo = null, $level = 1 )
     {
+        if (is_null($this->auth)) $this->init($idpName);
         if ($auth->isAuthenticated) {
             return false;
         }
@@ -95,6 +90,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function logout()
     {
+        if (is_null($this->auth)) return false;
         if (!$auth->isAuthenticated()) {
             return false;
         }

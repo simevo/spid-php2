@@ -22,7 +22,7 @@ $settings = [
         ),
     ];
 
-$onelogin = new PhpSaml("http://idp.simevo.com", $settings);
+$onelogin = new PhpSaml("http://idp.simevo.com", "/sp.key", "/sp.crt", $settings);
 
 if (!$onelogin->isAuthenticated()) $onelogin->login();
 
