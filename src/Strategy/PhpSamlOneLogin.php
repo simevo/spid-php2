@@ -144,4 +144,9 @@ class PhpSamlOneLogin implements PhpSamlInterface
         return true;
     }
 
+    public function getAttributes()
+    {
+        return $this->userdata;
+    }
+
 }

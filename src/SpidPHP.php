@@ -58,4 +58,9 @@ class SpidPHP implements PhpSamlInterface
         return $this->phpSaml->logout();
     }
 
+    public function getAttributes()
+    {
+        return $this->phpSaml->getAttributes();
+    }
+
 }

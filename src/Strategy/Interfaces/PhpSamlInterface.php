@@ -8,4 +8,5 @@ interface PhpSamlInterface {
     public function isAuthenticated();
     public function login( $idpName, $redirectTo = '', $level = 1 );
     public function logout();
+    public function getAttributes();
 }
