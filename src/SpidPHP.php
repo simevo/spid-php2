@@ -49,7 +49,6 @@ class SpidPHP implements PhpSamlInterface
     public function login( $idpName, $redirectTo = '', $level = 1 )
     {   
         if (is_null($this->phpSaml)) $this->initStrategy($idpName);
-        return;
         $this->phpSaml->login($redirectTo);
     }
     

@@ -62,9 +62,9 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function getSPMetadata()
     {
-        $oneloginSettings = new Settings($this->settings->getSettings());
+        $oneloginSettings = new Settings($this->settingsHelper->getSettings());
         $metadata = $oneloginSettings->getSPMetadata();
-        var_dump($oneloginSettings);
+        var_dump($metadata);
         die();
         $errors = $oneloginSettings->validateMetadata($metadata);
         if (!empty($errors)) {
