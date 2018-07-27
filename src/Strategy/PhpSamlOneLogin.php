@@ -83,7 +83,23 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function isAuthenticated()
     {
-        if ($this->auth->isAuthenticated) {
+        if (isset($_POST) && isset($_POST['SAMLResponse'])) {
+            $this->auth->processResponse();
+    
+            $errors = $this->auth->getErrors();
+
+            if (!empty($errors)) {
+                return $errors;
+            }
+
+            $this->userdata = array();
+            $this->userdata['samlUserdata'] = $this->auth->getAttributes();
+            $this->userdata['samlNameId'] = $this->auth->getNameId();
+            $this->userdata['samlNameIdFormat'] = $this->auth->getNameIdFormat();
+            $this->userdata['samlSessionIndex'] = $this->auth->getSessionIndex();
+
+        }
+        if ($this->auth->isAuthenticated() === false) {
             return false;
         }
         return true;
@@ -98,39 +114,11 @@ class PhpSamlOneLogin implements PhpSamlInterface
         }
         
         $this->auth->login($redirectTo);
-        
-        $requestID = null;
-        if (isset($_SESSION['AuthNRequestID'])) {
-            $requestID = $_SESSION['AuthNRequestID'];
-        }
-
-        $this->auth->processResponse($requestID);
-        unset($_SESSION['AuthNRequestID']);
-
-        $errors = $this->auth->getErrors();
-        if (!empty($errors)) {
-            return $errors;
-        }
-
-        if (!$this->auth->isAuthenticated()) {
-            return false;
-        }
-        $this->userdata = array();
-        $this->userdata['samlUserdata'] = $this->auth->getAttributes();
-        $this->userdata['samlNameId'] = $this->auth->getNameId();
-        $this->userdata['samlNameIdFormat'] = $this->auth->getNameIdFormat();
-        $this->userdata['samlSessionIndex'] = $this->auth->getSessionIndex();
-
-        if (!empty($data['samlUserdata'])) {
-            return $data;
-        }
-
-        return false;
     }
 
     public function logout()
     {
-        if (!$this->auth->isAuthenticated()) {
+        if ($this->auth->isAuthenticated() === false) {
             return false;
         }
         $this->auth->logout();

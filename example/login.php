@@ -11,8 +11,6 @@ use SpidPHP\SpidPHP;
 
 $onelogin = new SpidPHP($settings);
 
-print_r($_POST);
-
 if ($onelogin->isAuthenticated() === false) {
     $result = $onelogin->login("testenv2");
     print_r($result);
