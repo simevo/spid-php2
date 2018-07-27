@@ -8,51 +8,31 @@ require_once(__DIR__ . "/../vendor/autoload.php");
 require_once(__DIR__ . "/settings.php");
 
 use SpidPHP\SpidPHP;
-$base = "http://sp.simevo.com:8000";
-$settings = [
-        'spBaseUrl' => $base,
-        'spEntityId' => $base."/metadata.php",
-        'spKeyFile' => __DIR__ . "/../sp.key",
-        'spCrtFile' => __DIR__ . "/../sp.crt",
-        'spAcsUrl' => $base."/index.php?acs",
-        'spSloUrl' => $base."/index.php?slo"
-    ];
+
+
+echo '<p><a href="?sso" >Login</a></p>';
+echo '<p><a href="?sso2" >Login and access to attrs.php page</a></p>';
+echo '<p><a href="metadata.php" >Show the SP metadata</a></p>';
 
 $onelogin = new SpidPHP($settings);
-$result = $onelogin->login("testenv2");
+
+if (isset($_GET['sso'])) {
+    $result = $onelogin->login("testenv2");
+    print_r($result);
+    die();    
+}
 
 //if (!$onelogin->isAuthenticated()) $onelogin->login();
 
 //if ($onelogin->login()) $onelogin->logout();
 
 
-
+/*
 if (isset($_GET['sso'])) {
     $result = $onelogin->login("testenv2");
     print_r($result);
 } elseif (isset($_GET['slo'])) {
-    $returnTo = null;
-    $parameters = array();
-    $nameId = null;
-    $sessionIndex = null;
-    $nameIdFormat = null;
-    if (isset($_SESSION['samlNameId'])) {
-        $nameId = $_SESSION['samlNameId'];
-    }
-    if (isset($_SESSION['samlSessionIndex'])) {
-        $sessionIndex = $_SESSION['samlSessionIndex'];
-    }
-    if (isset($_SESSION['samlNameIdFormat'])) {
-        $nameIdFormat = $_SESSION['samlNameIdFormat'];
-    }
-    $auth->logout($returnTo, $parameters, $nameId, $sessionIndex, false, $nameIdFormat);
-    # If LogoutRequest ID need to be saved in order to later validate it, do instead
-    # $sloBuiltUrl = $auth->logout(null, $parameters, $nameId, $sessionIndex, true);
-    # $_SESSION['LogoutRequestID'] = $auth->getLastRequestID();
-    # header('Pragma: no-cache');
-    # header('Cache-Control: no-cache, must-revalidate');
-    # header('Location: ' . $sloBuiltUrl);
-    # exit();
+    $onelogin->logout();
 } elseif (isset($_GET['acs'])) {
     if (isset($_SESSION) && isset($_SESSION['AuthNRequestID'])) {
         $requestID = $_SESSION['AuthNRequestID'];
@@ -112,3 +92,4 @@ if (isset($_SESSION['samlUserdata'])) {
     echo '<p><a href="?sso2" >Login and access to attrs.php page</a></p>';
     echo '<p><a href="metadata.php" >Show the SP metadata</a></p>';
 }
+*/

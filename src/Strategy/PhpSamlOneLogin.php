@@ -24,7 +24,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     function __construct($idpName = null, $settings)
     {
-        $this->idpName = $idpName ?? "testenv2";
+        $this->idpName = $idpName ?? "testenv2";     
         $this->settings = $settings;
         $this->init();
     }
@@ -49,7 +49,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
         }
         
         $this->settingsHelper->updateIdpMetadata($this->idpName);
-        $this->settings = new Settings($this->settingsHelper->getSettings());
+        $this->oneloginSettings = new Settings($this->settingsHelper->getSettings());
         $this->auth = new Auth($this->settingsHelper->getSettings());
     }
 

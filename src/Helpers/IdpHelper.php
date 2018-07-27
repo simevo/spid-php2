@@ -9,6 +9,7 @@ class IdpHelper
         if (!file_exists(__DIR__ . "/../Config/idp/" . $idpName . ".xml")) {
             throw new \Exception("Invalid IDP Requested", 1);
         }
+        
         $xml = simplexml_load_file(__DIR__ . "/../Config/idp/" . $idpName . '.xml');
         
         $metadata = array();
@@ -16,7 +17,7 @@ class IdpHelper
         $metadata['idpSSO'] = $xml->xpath('//SingleSignOnService')[0]->attributes()->Location->__toString();
         $metadata['idpSLO'] = $xml->xpath('//SingleLogoutService')[0]->attributes()->Location->__toString();
         $metadata['idpCertValue'] = $xml->xpath('//X509Certificate')[0]->__toString();
-        
+         
         return $metadata;
     }
 }
