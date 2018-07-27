@@ -7,7 +7,7 @@
 require_once(__DIR__ . "/../vendor/autoload.php");
 
 use SpidPHP\SpidPHP;
-$base = "http://sp.simevo.com:8000";
+$base = "http://spid.test.com";
 $settings = [
         'spBaseUrl' => $base,
         'spEntityId' => $base."/metadata.php",
@@ -22,6 +22,8 @@ $onelogin = new SpidPHP($settings);
 
 $metadata = $onelogin->getSPMetadata();
 
+header('Content-Type: text/xml');
+echo $metadata;
 //if (!$onelogin->isAuthenticated()) $onelogin->login();
 
 //if ($onelogin->login()) $onelogin->logout();

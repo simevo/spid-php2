@@ -32,7 +32,7 @@ class SpidPHP implements PhpSamlInterface
     public function getSPMetadata()
     {
         if (is_null($this->phpSaml)) $this->initStrategy();
-        $this->phpSaml->getSPMetadata();
+        return $this->phpSaml->getSPMetadata();
     }
 
     public function getSupportedIdps()
@@ -43,19 +43,19 @@ class SpidPHP implements PhpSamlInterface
     public function isAuthenticated()
     {   
         if (is_null($this->phpSaml)) return false;
-        $this->phpSaml->isAuthenticated();
+        return $this->phpSaml->isAuthenticated();
     }
 
     public function login( $idpName, $redirectTo = '', $level = 1 )
     {   
         if (is_null($this->phpSaml)) $this->initStrategy($idpName);
-        $this->phpSaml->login($redirectTo);
+        return $this->phpSaml->login($redirectTo);
     }
     
     public function logout()
     {
         if (is_null($this->phpSaml)) return false;
-        $this->phpSaml->logout();
+        return $this->phpSaml->logout();
     }
 
 }

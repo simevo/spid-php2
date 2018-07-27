@@ -64,8 +64,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
     {
         $oneloginSettings = new Settings($this->settingsHelper->getSettings());
         $metadata = $oneloginSettings->getSPMetadata();
-        var_dump($metadata);
-        die();
+        
         $errors = $oneloginSettings->validateMetadata($metadata);
         if (!empty($errors)) {
             throw new OneLogin_Saml2_Error(
