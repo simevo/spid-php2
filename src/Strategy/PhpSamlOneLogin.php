@@ -20,6 +20,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
     private $auth;
     private $settingsHelper;
     private $oneloginSettings;
+    private $userdata;
 
     function __construct($idpName = null, $settings)
     {
@@ -114,11 +115,11 @@ class PhpSamlOneLogin implements PhpSamlInterface
         if (!$this->auth->isAuthenticated()) {
             return false;
         }
-        $data = array();
-        $data['samlUserdata'] = $this->auth->getAttributes();
-        $data['samlNameId'] = $this->auth->getNameId();
-        $data['samlNameIdFormat'] = $this->auth->getNameIdFormat();
-        $data['samlSessionIndex'] = $this->auth->getSessionIndex();
+        $this->userdata = array();
+        $this->userdata['samlUserdata'] = $this->auth->getAttributes();
+        $this->userdata['samlNameId'] = $this->auth->getNameId();
+        $this->userdata['samlNameIdFormat'] = $this->auth->getNameIdFormat();
+        $this->userdata['samlSessionIndex'] = $this->auth->getSessionIndex();
 
         if (!empty($data['samlUserdata'])) {
             return $data;
