@@ -18,6 +18,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
     private $settings = null;
 
     private $auth;
+    private $authRequestID;
     private $settingsHelper;
     private $oneloginSettings;
     private $userdata;
@@ -83,9 +84,9 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function isAuthenticated()
     {
-        if (isset($_POST) && isset($_POST['SAMLResponse'])) {
-            $this->auth->processResponse();
-    
+        if (!is_null($this->authRequestID)) {
+            $this->auth->processResponse($this->authRequestID);
+            $this->authRequestID = null;
             $errors = $this->auth->getErrors();
 
             if (!empty($errors)) {
@@ -113,7 +114,13 @@ class PhpSamlOneLogin implements PhpSamlInterface
             return false;
         }
         
-        $this->auth->login($redirectTo);
+        $ssoBuiltUrl = $this->auth->login($redirectTo, array(), false, false, true);
+        $this->authRequestID = $this->auth->getLastRequestID();
+
+        header('Pragma: no-cache');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Location: ' . $ssoBuiltUrl);
+        exit();
     }
 
     public function logout()
