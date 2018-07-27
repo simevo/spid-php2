@@ -114,14 +114,14 @@ class PhpSamlOneLogin implements PhpSamlInterface
         if (!$this->auth->isAuthenticated()) {
             return false;
         }
+        $data = array();
+        $data['samlUserdata'] = $this->auth->getAttributes();
+        $data['samlNameId'] = $this->auth->getNameId();
+        $data['samlNameIdFormat'] = $this->auth->getNameIdFormat();
+        $data['samlSessionIndex'] = $this->auth->getSessionIndex();
 
-        $_SESSION['samlUserdata'] = $this->auth->getAttributes();
-        $_SESSION['samlNameId'] = $this->auth->getNameId();
-        $_SESSION['samlNameIdFormat'] = $this->auth->getNameIdFormat();
-        $_SESSION['samlSessionIndex'] = $this->auth->getSessionIndex();
-
-        if (!empty($_SESSION['samlUserdata'])) {
-            return true;
+        if (!empty($data['samlUserdata'])) {
+            return $data;
         }
 
         return false;
