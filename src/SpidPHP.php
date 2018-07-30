@@ -12,7 +12,8 @@ class SpidPHP implements PhpSamlInterface
     private $settings = null;
 
     public function __construct($settings = null, $mode = 'onelogin')
-    {
+    {   
+        session_start();
         $this->mode = $mode;
         $this->settings = $settings;
     }
@@ -42,6 +43,7 @@ class SpidPHP implements PhpSamlInterface
 
     public function isAuthenticated()
     {   
+        if (isset($_SESSION['idpName']) && is_null($this->phpSaml)) $this->initStrategy($_SESSION['idpName']);
         if (is_null($this->phpSaml)) return false;
         return $this->phpSaml->isAuthenticated();
     }
