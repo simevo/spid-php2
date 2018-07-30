@@ -9,3 +9,5 @@ config.yaml
 AuthnRequest.patched
 LogoutRequest.patched
 .vscode
+.DS_Store
+
