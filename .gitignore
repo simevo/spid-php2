@@ -8,3 +8,4 @@ config.yaml
 .directory
 AuthnRequest.patched
 LogoutRequest.patched
+.vscode
