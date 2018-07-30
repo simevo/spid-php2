@@ -6,6 +6,6 @@ $settings = [
         'spEntityId' => $base."/metadata.php",
         'spKeyFile' => __DIR__ . "/../sp.key",
         'spCrtFile' => __DIR__ . "/../sp.crt",
-        'spAcsUrl' => $base."/index.php?acs",
-        'spSloUrl' => $base."/index.php?slo"
+        'spAcsUrl' => $base."/acs.php",
+        'spSloUrl' => $base."/logout.php"
     ];
