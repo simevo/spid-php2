@@ -84,6 +84,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function isAuthenticated()
     {
+        if (isset($_SESSION) && isset($_SESSION['authReqID'])) $this->authRequestID =$_SESSION['authReqID'];
         if (!is_null($this->authRequestID)) {
             $this->auth->processResponse($this->authRequestID);
             $this->authRequestID = null;
@@ -115,7 +116,11 @@ class PhpSamlOneLogin implements PhpSamlInterface
         }
         
         $ssoBuiltUrl = $this->auth->login($redirectTo, array(), false, false, true);
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         $this->authRequestID = $this->auth->getLastRequestID();
+        $_SESSION['authReqID'] = $this->auth->getLastRequestID();
 
         header('Pragma: no-cache');
         header('Cache-Control: no-cache, must-revalidate');
