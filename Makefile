@@ -1,13 +1,13 @@
 all: sp.key AuthnRequest.patched LogoutRequest.patched
 
 AuthnRequest.patched: AuthnRequest.diff
-	if [ -e $@ ]; then patch -R vendor/onelogin/php-saml/lib/Saml2/AuthnRequest.php $@; fi
-	  patch -N vendor/onelogin/php-saml/lib/Saml2/AuthnRequest.php $<
+	if [ -e $@ ]; then patch -R vendor/onelogin/php-saml/src/Saml2/AuthnRequest.php $@; fi
+	  patch -N vendor/onelogin/php-saml/src/Saml2/AuthnRequest.php $<
 	cp AuthnRequest.diff $@
 
 LogoutRequest.patched: LogoutRequest.diff
-	if [ -e $@ ]; then patch -R vendor/onelogin/php-saml/lib/Saml2/LogoutRequest.php $@; fi
-	   patch -N vendor/onelogin/php-saml/lib/Saml2/LogoutRequest.php $<
+	if [ -e $@ ]; then patch -R vendor/onelogin/php-saml/src/Saml2/LogoutRequest.php $@; fi
+	   patch -N vendor/onelogin/php-saml/src/Saml2/LogoutRequest.php $<
 	cp LogoutRequest.diff $@
 
 sp.key:
