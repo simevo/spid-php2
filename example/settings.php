@@ -1,6 +1,6 @@
 <?php
 
-$base = "http://spid.test.com";
+$base = "http://sp2.simevo.com:8000";
 $settings = [
         'spBaseUrl' => $base,
         'spEntityId' => $base."/metadata.php",

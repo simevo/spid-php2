@@ -16,10 +16,13 @@ if ($onelogin->isAuthenticated()) {
     echo "logged in !" . PHP_EOL;
     var_dump($attributes);
     foreach ($attributes as $key => $attribute) {
-        echo $attribute . "\n";
+        echo $key .": " . $attribute . "\n";
     }
+
+    echo '<p><a href="logout.php" >Login</a></p>';
 } else {
     echo "not logged in !" . PHP_EOL;
+    echo '<p><a href="login.php" >Login</a></p>';
 }
 
-echo '<p><a href="login.php" >Login</a></p>';
+

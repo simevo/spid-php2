@@ -88,7 +88,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
             $this->rebuildPhpSamlOnelogin($_SESSION['idpName']);
             $this->authRequestID =$_SESSION['authReqID'];
         }
-        if (!is_null($this->authRequestID)) {
+        if (!is_null($this->authRequestID) && isset($_POST['SAMLResponse'])) {
             $this->auth->processResponse($this->authRequestID);
             $this->authRequestID = null;
             $errors = $this->auth->getErrors();
@@ -102,6 +102,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
             $this->userdata['samlNameId'] = $this->auth->getNameId();
             $this->userdata['samlNameIdFormat'] = $this->auth->getNameIdFormat();
             $this->userdata['samlSessionIndex'] = $this->auth->getSessionIndex();
+            $_SESSION['userdata'] = $this->userdata;
 
         }
         if ($this->auth->isAuthenticated() === false) {

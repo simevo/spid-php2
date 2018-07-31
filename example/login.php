@@ -12,15 +12,6 @@ use SpidPHP\SpidPHP;
 $onelogin = new SpidPHP($settings);
 
 if ($onelogin->isAuthenticated() === false) {
-    $result = $onelogin->login("testenv2");
-    print_r($result);
-    exit();    
+    $onelogin->login("testenv2");
 }
-
-$attributes = $onelogin->getAttributes();
-
-foreach ($attributes as $key => $attribute) {
-    echo $attribute . "\n";
-}
-
     
