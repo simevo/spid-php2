@@ -12,7 +12,5 @@ use SpidPHP\SpidPHP;
 $onelogin = new SpidPHP($settings);
 
 if ($onelogin->isAuthenticated()) {
-    $result = $onelogin->logout();
-    print_r($result);
-    exit();
+    $onelogin->logout();
 }

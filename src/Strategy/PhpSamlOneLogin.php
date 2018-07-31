@@ -88,6 +88,17 @@ class PhpSamlOneLogin implements PhpSamlInterface
             $this->rebuildPhpSamlOnelogin($_SESSION['idpName']);
             $this->authRequestID =$_SESSION['authReqID'];
         }
+
+        if (isset($_SESSION) && isset($_SESSION['LogoutRequestID'])) {
+            $this->auth->processSLO(false, $_SESSION['LogoutRequestID']);
+
+            $errors = $this->auth->getErrors();
+            if (!empty($errors)) {
+                return $errors;
+            }
+            return false;
+        }
+
         if (!is_null($this->authRequestID) && isset($_POST['SAMLResponse'])) {
             $this->auth->processResponse($this->authRequestID);
             $this->authRequestID = null;
@@ -137,14 +148,14 @@ class PhpSamlOneLogin implements PhpSamlInterface
             return false;
         }
         $this->auth->logout();
-        $this->auth->processSLO();
 
-        $errors = $this->auth->getErrors();
-        if (!empty($errors)) {
-            return $errors;
-        }
-
-        return true;
+        $sloBuiltUrl = $this->auth->logout(null, array(), null, null, true);
+        $_SESSION['LogoutRequestID'] = $this->auth->getLastRequestID();
+        
+        header('Pragma: no-cache');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Location: ' . $sloBuiltUrl);
+        exit();
     }
 
     public function getAttributes()

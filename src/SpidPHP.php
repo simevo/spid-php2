@@ -56,12 +56,14 @@ class SpidPHP implements PhpSamlInterface
     
     public function logout()
     {
+        if (isset($_SESSION['idpName']) && is_null($this->phpSaml)) $this->initStrategy($_SESSION['idpName']);
         if (is_null($this->phpSaml)) return false;
         return $this->phpSaml->logout();
     }
 
     public function getAttributes()
-    {
+    {   
+        if (is_null($this->phpSaml)) return false;
         return $this->phpSaml->getAttributes();
     }
 
