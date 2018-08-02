@@ -72,19 +72,19 @@ class OneloginSamlConfig
                 "serviceDescription" => "Test Service",
                 "requestedAttributes" => array(
                     array (
-                        'nameFormat' => OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
+                        'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
                         'isRequired' => true,
                         'name' => 'name',
                         'friendlyName' => 'Nome'
                     ),
                     array (
-                        'nameFormat' => OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
+                        'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
                         'isRequired' => true,
                         'name' => 'familyName',
                         'friendlyName' => 'Cognome'
                     ),
                     array (
-                        'nameFormat' => OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
+                        'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
                         'isRequired' => true,
                         'name' => 'fiscalNumber',
                         'friendlyName' => 'Codice Fiscale'
