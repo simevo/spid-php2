@@ -125,7 +125,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function login( $idpName, $redirectTo = '', $level = 1 )
     {
-        $this->rebuildPhpSamlOnelogin($idpName);
+        $this->changeIdp()($idpName);
 
         if ($this->auth->isAuthenticated()) {
             return false;
