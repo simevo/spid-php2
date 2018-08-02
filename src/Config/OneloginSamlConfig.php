@@ -67,6 +67,24 @@ class OneloginSamlConfig
                 ),
                 'x509cert' => $this->idpCertValue,
             ),
+            "attributeConsumingService"=> array(
+                "serviceName" => "SP test",
+                "serviceDescription" => "Test Service",
+                "requestedAttributes" => array(
+                    array(
+                        "name" => "name",
+                        "isRequired" => false,
+                    ),
+                    array(
+                        "familyName" => "name",
+                        "isRequired" => false,
+                    ),
+                    array(
+                        "name" => "fiscalNumber",
+                        "isRequired" => false,
+                    ),
+                )
+            ),
             'security' => array(
                 'authnRequestsSigned' => true,
                 'logoutRequestSigned' => true,
