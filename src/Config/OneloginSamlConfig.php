@@ -56,6 +56,30 @@ class OneloginSamlConfig
                 'NameIDFormat' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
                 'x509cert' => $this->spCrtFile,
                 'privateKey' => $this->spKeyFile,
+                "attributeConsumingService"=> array(
+                    "serviceName" => "SP test",
+                    "serviceDescription" => "Test Service",
+                    "requestedAttributes" => array(
+                        array (
+                            'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
+                            'isRequired' => true,
+                            'name' => 'name',
+                           'friendlyName' => 'Nome'
+                        ),
+                        array (
+                            'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
+                            'isRequired' => true,
+                            'name' => 'familyName',
+                            'friendlyName' => 'Cognome'
+                        ),
+                        array (
+                             'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
+                            'isRequired' => true,
+                            'name' => 'fiscalNumber',
+                            'friendlyName' => 'Codice Fiscale'
+                        ),
+                    )
+                ),
             ),
             'idp' => array(
                 'entityId' => $this->idpEntityId,
@@ -66,30 +90,6 @@ class OneloginSamlConfig
                     'url' => $this->idpSLO,
                 ),
                 'x509cert' => $this->idpCertValue,
-            ),
-            "attributeConsumingService"=> array(
-                "serviceName" => "SP test",
-                "serviceDescription" => "Test Service",
-                "requestedAttributes" => array(
-                    array (
-                        'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
-                        'isRequired' => true,
-                        'name' => 'name',
-                        'friendlyName' => 'Nome'
-                    ),
-                    array (
-                        'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
-                        'isRequired' => true,
-                        'name' => 'familyName',
-                        'friendlyName' => 'Cognome'
-                    ),
-                    array (
-                        'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
-                        'isRequired' => true,
-                        'name' => 'fiscalNumber',
-                        'friendlyName' => 'Codice Fiscale'
-                    ),
-                )
             ),
             'security' => array(
                 'authnRequestsSigned' => true,
