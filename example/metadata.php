@@ -15,6 +15,3 @@ $metadata = $onelogin->getSPMetadata();
 
 header('Content-Type: text/xml');
 echo $metadata;
-//if (!$onelogin->isAuthenticated()) $onelogin->login();
-
-//if ($onelogin->login()) $onelogin->logout();

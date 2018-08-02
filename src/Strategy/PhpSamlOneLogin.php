@@ -54,7 +54,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
         $this->auth = new Auth($this->settingsHelper->getSettings());
     }
 
-    private function rebuildPhpSamlOnelogin($idpName)
+    private function changeIdp($idpName)
     {
         if ($this->idpName != $idpName) {
             $this->idpName = $idpName;
@@ -84,13 +84,14 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function isAuthenticated()
     {
-        if (isset($_SESSION) && isset($_SESSION['authReqID'])) {
-            $this->rebuildPhpSamlOnelogin($_SESSION['idpName']);
-            $this->authRequestID =$_SESSION['authReqID'];
+        if (isset($_SESSION) && isset($_SESSION['idpName'])) {
+            $this->changeIdp($_SESSION['idpName']);
+            $this->authRequestID = $_SESSION['authReqID'];
         }
 
         if (isset($_SESSION) && isset($_SESSION['LogoutRequestID'])) {
             $this->auth->processSLO(false, $_SESSION['LogoutRequestID']);
+            unset($_SESSION['LogoutRequestID']);
 
             $errors = $this->auth->getErrors();
             if (!empty($errors)) {
@@ -99,9 +100,9 @@ class PhpSamlOneLogin implements PhpSamlInterface
             return false;
         }
 
-        if (!is_null($this->authRequestID) && isset($_POST['SAMLResponse'])) {
-            $this->auth->processResponse($this->authRequestID);
-            $this->authRequestID = null;
+        if (isset($_SESSION['authReqID']) && isset($_POST['SAMLResponse'])) {
+            $this->auth->processResponse($_SESSION['authReqID']);
+            unset($_SESSION['authReqID']);
             $errors = $this->auth->getErrors();
 
             if (!empty($errors)) {

@@ -13,5 +13,7 @@ $onelogin = new SpidPHP($settings);
 
 if ($onelogin->isAuthenticated() === false) {
     $onelogin->login("testenv2");
+} else {
+	echo "Already logged in!";
 }
     
