@@ -8,5 +8,5 @@ $settings = [
         'spCrtFile' => __DIR__ . "/../sp.crt",
         'spAcsUrl' => $base."/acs.php",
         'spSloUrl' => $base."/logout.php",
-        "idpMetadataFolderPath" => "idp_metadata"
+        "idpMetadataFolderPath" => "../idp_metadata"
     ];

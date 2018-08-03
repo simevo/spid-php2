@@ -1,6 +1,12 @@
 <?php
 
-namespace SpidPHP\Helpers\Constants;
+namespace SpidPHP\Helpers;
 
-// Project root folder, assuming the package was installed with composer and is in vendor folder
-const APP_PATH = __DIR__ . '/../../../';
+class Constants {
+    const APP_PATH = __DIR__ . '/../../../';
+
+    public static function getAppPath()
+    {
+        return self::APP_PATH;
+    }
+}

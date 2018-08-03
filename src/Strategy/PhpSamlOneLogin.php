@@ -6,12 +6,12 @@ use SpidPHP\Strategy\Interfaces\PhpSamlInterface;
 use SpidPHP\Helpers\ArrayHelper;
 use SpidPHP\Helpers\IdpHelper;
 use SpidPHP\Helpers\SpHelper;
-use const SpidPHP\Helpers\Constants\APP_PATH;
 use SpidPHP\Config\OneloginSamlConfig;
 
 use OneLogin\Saml2\Auth;
 use OneLogin\Saml2\Utils;
 use OneLogin\Saml2\Settings;
+use SpidPHP\Helpers\Constants;
 
 
 class PhpSamlOneLogin implements PhpSamlInterface
@@ -89,7 +89,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
             return $this->settings['idp_list']; 
         }
         
-        $dir = APP_PATH . $this->settings['idpMetadataFolderPath']; 
+        $dir = Constants::APP_PATH . $this->settings['idpMetadataFolderPath']; 
         $idp_files =  glob( $dir . '*.{xml}', GLOB_BRACE);
         $idps = array();
         foreach ($idp_files as $key => $value) {
