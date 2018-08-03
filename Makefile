@@ -17,3 +17,5 @@ sp.key:
 
 clean:
 	rm -rf vendor
+	rm -f AuthnRequest.patched
+	rm -f LogoutRequest.patched
