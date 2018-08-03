@@ -6,7 +6,6 @@ use SpidPHP\SpidPHP;
 
 
 $onelogin = new SpidPHP($settings);
-
 foreach ($onelogin->getSupportedIdps() as $key => $idp) {
     echo $key . ' - ' . $idp . '<br>';
 }
