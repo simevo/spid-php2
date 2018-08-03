@@ -22,11 +22,13 @@ class OneloginSamlConfig
     var $idpSSO = null;
     var $idpSLO = null;
     var $idpCertValue = null;
+    var $idpMetadataFolderPath= null;
     
     var $level = 1;
 
     var $idp_list = array();
 
+    private $is_required = ['spBaseUrl', ];
     private $is_not_updatable = ['spKeyFileValue', 'spCrtFileValue', 'idpEntityId', 'idpSSO', 'idpSLO', 'idpCertValue'];
 
     function __construct()

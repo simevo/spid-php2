@@ -1,12 +1,14 @@
 <?php
 
 namespace SpidPHP\Helpers;
+use const SpidPHP\Helpers\Constants\APP_PATH;
 
 class IdpHelper
 {
-    public static function getMetadata($idpName)
+    public static function getMetadata($idpName, $folder)
     {
-        if (!file_exists(__DIR__ . "/../../idp_metadata/" . $idpName . ".xml")) {
+        
+        if (!file_exists(APP_PATH . $folder . $idpName . ".xml")) {
             throw new \Exception("Invalid IDP Requested", 1);
         }
         

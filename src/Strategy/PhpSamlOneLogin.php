@@ -6,11 +6,13 @@ use SpidPHP\Strategy\Interfaces\PhpSamlInterface;
 use SpidPHP\Helpers\ArrayHelper;
 use SpidPHP\Helpers\IdpHelper;
 use SpidPHP\Helpers\SpHelper;
+use const SpidPHP\Helpers\Constants\APP_PATH;
 use SpidPHP\Config\OneloginSamlConfig;
 
 use OneLogin\Saml2\Auth;
 use OneLogin\Saml2\Utils;
 use OneLogin\Saml2\Settings;
+
 
 class PhpSamlOneLogin implements PhpSamlInterface
 {
@@ -83,16 +85,19 @@ class PhpSamlOneLogin implements PhpSamlInterface
     public function getSupportedIdps()
     {   
         if (array_key_exists('idp_list', $this->settings) && is_array($this->settings['idp_list'])) {
+            
             return $this->settings['idp_list']; 
         }
-        return array(2,3,4);
-        $dir = __DIR__ . '/../../idp_metadata';
+        
+        $dir = APP_PATH . $this->settings['idpMetadataFolderPath']; 
         $idp_files =  glob( $dir . '*.{xml}', GLOB_BRACE);
         $idps = array();
         foreach ($idp_files as $key => $value) {
             $xml = simplexml_load_file($value);
             $idps[basename($value, '.xml')] = $xml->attributes()->entityID->__toString();
         }
+        print_r($idp_files);
+        die;
         return $idps;
     }
 
