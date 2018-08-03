@@ -128,7 +128,7 @@ class OneloginSamlConfig
 
     public function updateIdpMetadata($idpName) {
         if (!array_key_exists($idpName, $this->idp_list)) {
-            throw new Exception("Unsupported IDP provided", 1);
+            throw new \Exception("Unsupported IDP provided", 1);
         }
         $metadata = IdpHelper::getMetadata($idpName);
         foreach ($metadata as $key => $value) {
