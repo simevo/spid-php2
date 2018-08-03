@@ -25,7 +25,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     function __construct($idpName = null, $settings)
     {
-        $this->idpName = $idpName ?? "testenv2";     
+        $this->idpName = $idpName;     
         $this->settings = $settings;
         $this->init();
     }
@@ -50,7 +50,8 @@ class PhpSamlOneLogin implements PhpSamlInterface
             $this->settings['idp_list'] = $this->getSupportedIdps();
             $settingsHelper->updateSettings($this->settings);
         }
-        
+        reset($this->settings['idp_list']);
+        $this->idpName = is_null($this->idpName) ? key($this->settings['idp_list']) : $this->idpName;
         $this->settingsHelper->updateIdpMetadata($this->idpName);
         $this->oneloginSettings = new Settings($this->settingsHelper->getSettings());
         $this->auth = new Auth($this->settingsHelper->getSettings());
@@ -84,6 +85,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
         if (array_key_exists('idp_list', $this->settings) && is_array($this->settings['idp_list'])) {
             return $this->settings['idp_list']; 
         }
+        return array(2,3,4);
         $dir = __DIR__ . '/../../idp_metadata';
         $idp_files =  glob( $dir . '*.{xml}', GLOB_BRACE);
         $idps = array();
@@ -171,7 +173,8 @@ class PhpSamlOneLogin implements PhpSamlInterface
     }
 
     public function getAttributes()
-    {
+    {   
+        if (is_null($this->userdata) || !array_key_exists('attributes', $this->userdata)) return array();
         return $this->userdata['attributes'];
     }
 

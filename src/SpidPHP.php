@@ -16,6 +16,8 @@ class SpidPHP implements PhpSamlInterface
         session_start();
         $this->mode = $mode;
         $this->settings = $settings;
+
+        $this->initStrategy();
     }
 
     private function initStrategy($idpName = null)
@@ -32,20 +34,16 @@ class SpidPHP implements PhpSamlInterface
 
     public function getSPMetadata()
     {
-        if (is_null($this->phpSaml)) $this->initStrategy();
         return $this->phpSaml->getSPMetadata();
     }
 
     public function getSupportedIdps()
     {
-        if (is_null($this->phpSaml)) return array();
         return $this->phpSaml->getSupportedIdps();
     }
 
     public function isAuthenticated()
     {   
-        if (isset($_SESSION['idpName']) && is_null($this->phpSaml)) $this->initStrategy($_SESSION['idpName']);
-        if (is_null($this->phpSaml)) return false;
         return $this->phpSaml->isAuthenticated();
     }
 
@@ -57,14 +55,11 @@ class SpidPHP implements PhpSamlInterface
     
     public function logout()
     {
-        if (isset($_SESSION['idpName']) && is_null($this->phpSaml)) $this->initStrategy($_SESSION['idpName']);
-        if (is_null($this->phpSaml)) return false;
         return $this->phpSaml->logout();
     }
 
     public function getAttributes()
     {   
-        if (is_null($this->phpSaml)) return false;
         return $this->phpSaml->getAttributes();
     }
 
