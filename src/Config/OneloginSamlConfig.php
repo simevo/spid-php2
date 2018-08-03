@@ -22,6 +22,10 @@ class OneloginSamlConfig
     var $idpSSO = null;
     var $idpSLO = null;
     var $idpCertValue = null;
+    
+    var $level = 1;
+
+    var $idp_list = array();
 
     private $is_not_updatable = ['spKeyFileValue', 'spCrtFileValue', 'idpEntityId', 'idpSSO', 'idpSLO', 'idpCertValue'];
 
@@ -61,19 +65,19 @@ class OneloginSamlConfig
                     "serviceDescription" => "Test Service",
                     "requestedAttributes" => array(
                         array (
-                            'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
+                            'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_BASIC,
                             'isRequired' => true,
                             'name' => 'name',
                            'friendlyName' => 'Nome'
                         ),
                         array (
-                            'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
+                            'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_BASIC,
                             'isRequired' => true,
                             'name' => 'familyName',
                             'friendlyName' => 'Cognome'
                         ),
                         array (
-                             'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_URI,
+                             'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_BASIC,
                             'isRequired' => true,
                             'name' => 'fiscalNumber',
                             'friendlyName' => 'Codice Fiscale'
@@ -97,14 +101,13 @@ class OneloginSamlConfig
                 'logoutResponseSigned' => true,
                 'signMetadata' => true,
                 'signatureAlgorithm' => 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
-                'requestedAuthnContext' => array('https://www.spid.gov.it/SpidL1'),
+                'requestedAuthnContext' => array('https://www.spid.gov.it/SpidL' . $this->level),
             ),
         );
     }
 
     public function updateSettings($settings) {
         foreach ($settings as $key => $value) {
-            // do not update idp os sp cert file values, they are updated in their own method
             if (!property_exists(OneloginSamlConfig::class, $key)) {
                 continue;
             }
@@ -124,6 +127,9 @@ class OneloginSamlConfig
     }
 
     public function updateIdpMetadata($idpName) {
+        if (!array_key_exists($idpName, $this->idp_list)) {
+            throw new Exception("Unsupported IDP provided", 1);
+        }
         $metadata = IdpHelper::getMetadata($idpName);
         foreach ($metadata as $key => $value) {
             if (property_exists(OneloginSamlConfig::class, $key) && strpos($key, "idp") !== false) {

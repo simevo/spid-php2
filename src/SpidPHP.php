@@ -38,7 +38,8 @@ class SpidPHP implements PhpSamlInterface
 
     public function getSupportedIdps()
     {
-        return array();
+        if (is_null($this->phpSaml)) return array();
+        return $this->phpSaml->getSupportedIdps();
     }
 
     public function isAuthenticated()

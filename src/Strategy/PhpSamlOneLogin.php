@@ -46,6 +46,8 @@ class PhpSamlOneLogin implements PhpSamlInterface
                 }
                 throw new \Exception($message, 1);
             }
+            // FI suer doesn't provide for an IDP mapping, a default one is provided
+            $this->settings['idp_list'] = $this->getSupportedIdps();
             $settingsHelper->updateSettings($this->settings);
         }
         
@@ -78,15 +80,24 @@ class PhpSamlOneLogin implements PhpSamlInterface
     }
 
     public function getSupportedIdps()
-    {
-        return array();
+    {   
+        if (array_key_exists('idp_list', $this->settings) && is_array($this->settings['idp_list'])) {
+            return $this->settings['idp_list']; 
+        }
+        $dir = __DIR__ . '/../../idp_metadata';
+        $idp_files =  glob( $dir . '*.{xml}', GLOB_BRACE);
+        $idps = array();
+        foreach ($idp_files as $key => $value) {
+            $xml = simplexml_load_file($value);
+            $idps[basename($value, '.xml')] = $xml->attributes()->entityID->__toString();
+        }
+        return $idps;
     }
 
     public function isAuthenticated()
     {
         if (isset($_SESSION) && isset($_SESSION['idpName'])) {
             $this->changeIdp($_SESSION['idpName']);
-            $this->authRequestID = $_SESSION['authReqID'];
         }
 
         if (isset($_SESSION) && isset($_SESSION['LogoutRequestID'])) {
@@ -114,7 +125,6 @@ class PhpSamlOneLogin implements PhpSamlInterface
             $this->userdata['samlNameId'] = $this->auth->getNameId();
             $this->userdata['samlNameIdFormat'] = $this->auth->getNameIdFormat();
             $this->userdata['samlSessionIndex'] = $this->auth->getSessionIndex();
-            $_SESSION['userdata'] = $this->userdata;
 
         }
         if ($this->auth->isAuthenticated() === false) {
@@ -125,6 +135,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function login( $idpName, $redirectTo = '', $level = 1 )
     {
+        $this->settings['level'] = $level;
         $this->changeIdp($idpName);
 
         if ($this->auth->isAuthenticated()) {
@@ -161,7 +172,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function getAttributes()
     {
-        return $this->userdata;
+        return $this->userdata['attributes'];
     }
 
 }

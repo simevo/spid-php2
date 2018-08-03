@@ -11,3 +11,6 @@ LogoutRequest.patched
 .vscode
 .DS_Store
 
+src/Config/idp/*.xml
+
+idp_metadata/*.xml

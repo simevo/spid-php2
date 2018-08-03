@@ -6,11 +6,11 @@ class IdpHelper
 {
     public static function getMetadata($idpName)
     {
-        if (!file_exists(__DIR__ . "/../Config/idp/" . $idpName . ".xml")) {
+        if (!file_exists(__DIR__ . "/../../idp_metadata/" . $idpName . ".xml")) {
             throw new \Exception("Invalid IDP Requested", 1);
         }
         
-        $xml = simplexml_load_file(__DIR__ . "/../Config/idp/" . $idpName . '.xml');
+        $xml = simplexml_load_file(__DIR__ . "/../../idp_metadata/" . $idpName . '.xml');
         
         $metadata = array();
         $metadata['idpEntityId'] = $xml->attributes()->entityID->__toString();

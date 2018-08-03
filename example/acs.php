@@ -15,7 +15,7 @@ if ($onelogin->isAuthenticated()) {
     $attributes = $onelogin->getAttributes();
     echo "logged in !" . PHP_EOL;
     foreach ($attributes as $key => $attribute) {
-        echo $key .": " . $attribute . "\n";
+        echo $key .": " . $attribute . "<br>";
     }
 
     echo '<p><a href="logout.php" >Logout</a></p>';
