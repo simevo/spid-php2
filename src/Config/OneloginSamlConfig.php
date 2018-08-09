@@ -5,33 +5,32 @@ namespace SpidPHP\Config;
 use SpidPHP\Helpers\SpHelper;
 use SpidPHP\Helpers\IdpHelper;
 
-
 class OneloginSamlConfig
 {
     // Default values SP
-    var $spBaseUrl = '';
-    var $spEntityId = null;
-    var $spKeyFile = 'sp.key';
-    var $spCrtFile = 'sp.crt';
+    public $spBaseUrl = '';
+    public $spEntityId = null;
+    public $spKeyFile = 'sp.key';
+    public $spCrtFile = 'sp.crt';
     private $spKeyFileValue = null;
     private $spCrtFileValue = null;
-    var $spAcsUrl = null;
-    var $spSloUrl = null;
+    public $spAcsUrl = null;
+    public $spSloUrl = null;
     // Default values IDP
-    var $idpEntityId = null;
-    var $idpSSO = null;
-    var $idpSLO = null;
-    var $idpCertValue = null;
-    var $idpMetadataFolderPath= null;
+    public $idpEntityId = null;
+    public $idpSSO = null;
+    public $idpSLO = null;
+    public $idpCertValue = null;
+    public $idpMetadataFolderPath= null;
     
-    var $level = 1;
+    public $level = 1;
 
-    var $idpList = array();
+    public $idpList = array();
 
     private $is_required = ['spBaseUrl', ];
     private $is_not_updatable = ['spKeyFileValue', 'spCrtFileValue', 'idpEntityId', 'idpSSO', 'idpSLO', 'idpCertValue'];
 
-    function __construct()
+    public function __construct()
     {
         // Default values
         $this->spAcsUrl = $this->spBaseUrl . '/index.php?acs';
@@ -108,7 +107,8 @@ class OneloginSamlConfig
         );
     }
 
-    public function updateSettings($settings) {
+    public function updateSettings($settings)
+    {
         foreach ($settings as $key => $value) {
             if (!property_exists(OneloginSamlConfig::class, $key)) {
                 continue;
@@ -128,7 +128,8 @@ class OneloginSamlConfig
         return $this->getSettings();
     }
 
-    public function updateIdpMetadata($idpName) {
+    public function updateIdpMetadata($idpName)
+    {
         if (!in_array($idpName, $this->idpList)) {
             throw new \Exception("Unsupported IDP $idpName", 1);
         }
@@ -141,11 +142,13 @@ class OneloginSamlConfig
         return $this->getSettings();
     }
 
-    public function updateSpData($sp) {
-        if (!is_array($sp)) 
+    public function updateSpData($sp)
+    {
+        if (!is_array($sp)) {
             throw new \Exception("Invalid SP certificate data provided", 1);
+        }
 
-        $this->spKeyFile = $sp['key'];    
+        $this->spKeyFile = $sp['key'];
         $this->spCrtFile = $sp['cert'];
 
         return $this->getSettings();

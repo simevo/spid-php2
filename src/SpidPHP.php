@@ -12,7 +12,7 @@ class SpidPHP implements PhpSamlInterface
     private $settings = null;
 
     public function __construct($settings = null, $mode = 'onelogin')
-    {   
+    {
         session_start();
         $this->mode = $mode;
         $this->settings = $settings;
@@ -43,13 +43,15 @@ class SpidPHP implements PhpSamlInterface
     }
 
     public function isAuthenticated()
-    {   
+    {
         return $this->phpSaml->isAuthenticated();
     }
 
-    public function login( $idpName, $redirectTo = '', $level = 1 )
-    {   
-        if (is_null($this->phpSaml)) $this->initStrategy($idpName);
+    public function login($idpName, $redirectTo = '', $level = 1)
+    {
+        if (is_null($this->phpSaml)) {
+            $this->initStrategy($idpName);
+        }
         return $this->phpSaml->login($idpName, $redirectTo);
     }
     
@@ -59,8 +61,7 @@ class SpidPHP implements PhpSamlInterface
     }
 
     public function getAttributes()
-    {   
+    {
         return $this->phpSaml->getAttributes();
     }
-
 }

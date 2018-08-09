@@ -26,4 +26,3 @@ class SpHelper
         return $ck;
     }
 }
-

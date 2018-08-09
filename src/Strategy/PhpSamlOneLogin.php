@@ -11,7 +11,6 @@ use OneLogin\Saml2\Auth;
 use OneLogin\Saml2\Utils;
 use OneLogin\Saml2\Settings;
 
-
 class PhpSamlOneLogin implements PhpSamlInterface
 {
     private $idpName = null;
@@ -23,9 +22,9 @@ class PhpSamlOneLogin implements PhpSamlInterface
     private $oneloginSettings;
     private $userdata;
 
-    function __construct($idpName = null, $settings)
+    public function __construct($settings, $idpName = null)
     {
-        $this->idpName = $idpName;     
+        $this->idpName = $idpName;
         $this->settings = $settings;
         $this->init();
     }
@@ -40,7 +39,9 @@ class PhpSamlOneLogin implements PhpSamlInterface
                 $message = "The following keys are invalid for the provided settings array: ";
                 $first = true;
                 foreach ($diff as $key => $value) {
-                    if ($first) $message .= $key;
+                    if ($first) {
+                        $message .= $key;
+                    }
                     $first = false;
                     $message .= ", " . $key;
                 }
@@ -80,13 +81,13 @@ class PhpSamlOneLogin implements PhpSamlInterface
     }
 
     public function getSupportedIdps()
-    {   
+    {
         if (array_key_exists('idpList', $this->settings) && is_array($this->settings['idpList'])) {
-            return $this->settings['idpList']; 
+            return $this->settings['idpList'];
         }
         
         $dir = $this->settings['idpMetadataFolderPath'];
-        $idp_files =  glob( $dir . '*.{xml}', GLOB_BRACE);
+        $idp_files =  glob($dir . '*.{xml}', GLOB_BRACE);
         $idps = array();
         foreach ($idp_files as $key => $value) {
             $xml = simplexml_load_file($value);
@@ -126,7 +127,6 @@ class PhpSamlOneLogin implements PhpSamlInterface
             $this->userdata['samlNameId'] = $this->auth->getNameId();
             $this->userdata['samlNameIdFormat'] = $this->auth->getNameIdFormat();
             $this->userdata['samlSessionIndex'] = $this->auth->getSessionIndex();
-
         }
         if ($this->auth->isAuthenticated() === false) {
             return false;
@@ -134,7 +134,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
         return true;
     }
 
-    public function login( $idpName, $redirectTo = '', $level = 1 )
+    public function login($idpName, $redirectTo = '', $level = 1)
     {
         $this->settings['level'] = $level;
         $this->changeIdp($idpName);
@@ -172,9 +172,10 @@ class PhpSamlOneLogin implements PhpSamlInterface
     }
 
     public function getAttributes()
-    {   
-        if (is_null($this->userdata) || !array_key_exists('attributes', $this->userdata)) return array();
+    {
+        if (is_null($this->userdata) || !array_key_exists('attributes', $this->userdata)) {
+            return array();
+        }
         return $this->userdata['attributes'];
     }
-
 }
