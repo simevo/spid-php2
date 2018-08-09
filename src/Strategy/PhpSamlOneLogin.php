@@ -3,7 +3,6 @@
 namespace SpidPHP\Strategy;
 
 use SpidPHP\Strategy\Interfaces\PhpSamlInterface;
-use SpidPHP\Helpers\ArrayHelper;
 use SpidPHP\Helpers\IdpHelper;
 use SpidPHP\Helpers\SpHelper;
 use SpidPHP\Config\OneloginSamlConfig;
@@ -11,8 +10,6 @@ use SpidPHP\Config\OneloginSamlConfig;
 use OneLogin\Saml2\Auth;
 use OneLogin\Saml2\Utils;
 use OneLogin\Saml2\Settings;
-use SpidPHP\Helpers\Constants;
-use SpidPHP\Helpers\PathHelper;
 
 
 class PhpSamlOneLogin implements PhpSamlInterface
@@ -38,7 +35,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
         $settingsHelper = new OneloginSamlConfig();
         $this->settingsHelper = $settingsHelper;
         if (!is_null($this->settings)) {
-            $diff = ArrayHelper::array_diff_key_recursive($this->settings, get_object_vars($settingsHelper));
+            $diff = array_diff_key($this->settings, get_object_vars($settingsHelper));
             if (!empty($diff)) {
                 $message = "The following keys are invalid for the provided settings array: ";
                 $first = true;
@@ -49,12 +46,11 @@ class PhpSamlOneLogin implements PhpSamlInterface
                 }
                 throw new \Exception($message, 1);
             }
-            // FI suer doesn't provide for an IDP mapping, a default one is provided
-            $this->settings['idp_list'] = $this->getSupportedIdps();
+            // if the user doesn't supply a preferred IDP, a default one is used
+            $this->settings['idpList'] = $this->getSupportedIdps();
             $settingsHelper->updateSettings($this->settings);
         }
-        reset($this->settings['idp_list']);
-        $this->idpName = is_null($this->idpName) ? key($this->settings['idp_list']) : $this->idpName;
+        $this->idpName = is_null($this->idpName) ? $this->settings['idpList'][1] : $this->idpName;
         $this->settingsHelper->updateIdpMetadata($this->idpName);
         $this->oneloginSettings = new Settings($this->settingsHelper->getSettings());
         $this->auth = new Auth($this->settingsHelper->getSettings());
@@ -85,11 +81,11 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function getSupportedIdps()
     {   
-        if (array_key_exists('idp_list', $this->settings) && is_array($this->settings['idp_list'])) {
-            return $this->settings['idp_list']; 
+        if (array_key_exists('idpList', $this->settings) && is_array($this->settings['idpList'])) {
+            return $this->settings['idpList']; 
         }
         
-        $dir = Constants::APP_PATH . PathHelper::fixPathSlashes($this->settings['idpMetadataFolderPath']); 
+        $dir = $this->settings['idpMetadataFolderPath'];
         $idp_files =  glob( $dir . '*.{xml}', GLOB_BRACE);
         $idps = array();
         foreach ($idp_files as $key => $value) {

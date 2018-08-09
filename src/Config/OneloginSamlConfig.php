@@ -26,7 +26,7 @@ class OneloginSamlConfig
     
     var $level = 1;
 
-    var $idp_list = array();
+    var $idpList = array();
 
     private $is_required = ['spBaseUrl', ];
     private $is_not_updatable = ['spKeyFileValue', 'spCrtFileValue', 'idpEntityId', 'idpSSO', 'idpSLO', 'idpCertValue'];
@@ -129,10 +129,10 @@ class OneloginSamlConfig
     }
 
     public function updateIdpMetadata($idpName) {
-        if (!array_key_exists($idpName, $this->idp_list)) {
-            throw new \Exception("Unsupported IDP provided", 1);
+        if (!in_array($idpName, $this->idpList)) {
+            throw new \Exception("Unsupported IDP $idpName", 1);
         }
-        $metadata = IdpHelper::getMetadata($idpName);
+        $metadata = IdpHelper::getMetadata($idpName, $this->idpMetadataFolderPath);
         foreach ($metadata as $key => $value) {
             if (property_exists(OneloginSamlConfig::class, $key) && strpos($key, "idp") !== false) {
                 $this->{$key} = $value;
