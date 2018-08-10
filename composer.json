@@ -4,15 +4,6 @@
         "onelogin/php-saml": "3.0.0.x-dev",
         "squizlabs/php_codesniffer": "*"
     },
-
-    "scripts": {
-        "post-install-cmd": [
-            "setup\\Configuration::setup"
-        ],
-        "post-update-cmd": [
-            "setup\\Configuration::setup"
-        ]
-    }, 
     "autoload": {
         "psr-4": {
             "SpidPHP\\": "src/"
