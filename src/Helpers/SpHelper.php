@@ -1,6 +1,6 @@
 <?php
 
-namespace SpidPHP\Helpers;
+namespace Spid\Helpers;
 
 class SpHelper
 {

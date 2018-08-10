@@ -1,13 +1,13 @@
 <?php
-namespace SpidPHP;
+namespace Spid;
 
-use SpidPHP\Strategy\Interfaces\PhpSamlInterface;
-use SpidPHP\Strategy\PhpSamlOneLogin;
+use Spid\Interfaces\SpInterface;
+use Spid\Strategy\SpOneLogin;
 
-class SpidPHP implements PhpSamlInterface
+class Sp implements SpInterface
 {
 
-    private $phpSaml = null;
+    private $strategy = null;
     private $mode = null;
     private $settings = null;
 
@@ -24,44 +24,44 @@ class SpidPHP implements PhpSamlInterface
     {
         switch ($this->mode) {
             case 'onelogin':
-                $this->phpSaml = new PhpSamlOneLogin($this->settings, $idpName);
+                $this->strategy = new SpOneLogin($this->settings, $idpName);
                 break;
             default:
-                $this->phpSaml = new PhpSamlOneLogin($this->settings, $idpName);
+                $this->strategy = new SpOneLogin($this->settings, $idpName);
                 break;
         }
     }
 
     public function getSPMetadata()
     {
-        return $this->phpSaml->getSPMetadata();
+        return $this->strategy->getSPMetadata();
     }
 
     public function getSupportedIdps()
     {
-        return $this->phpSaml->getSupportedIdps();
+        return $this->strategy->getSupportedIdps();
     }
 
     public function isAuthenticated()
     {
-        return $this->phpSaml->isAuthenticated();
+        return $this->strategy->isAuthenticated();
     }
 
     public function login($idpName, $redirectTo = '', $level = 1)
     {
-        if (is_null($this->phpSaml)) {
+        if (is_null($this->strategy)) {
             $this->initStrategy($idpName);
         }
-        return $this->phpSaml->login($idpName, $redirectTo);
+        return $this->strategy->login($idpName, $redirectTo);
     }
     
     public function logout()
     {
-        return $this->phpSaml->logout();
+        return $this->strategy->logout();
     }
 
     public function getAttributes()
     {
-        return $this->phpSaml->getAttributes();
+        return $this->strategy->getAttributes();
     }
 }

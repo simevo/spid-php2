@@ -7,12 +7,10 @@
 require_once(__DIR__ . "/../vendor/autoload.php");
 require_once(__DIR__ . "/settings.php");
 
-use SpidPHP\SpidPHP;
+$sp = new Spid\Sp($settings);
 
-$onelogin = new SpidPHP($settings);
-
-if ($onelogin->isAuthenticated()) {
-    $attributes = $onelogin->getAttributes();
+if ($sp->isAuthenticated()) {
+    $attributes = $sp->getAttributes();
     echo "logged in !" . PHP_EOL;
     foreach ($attributes as $key => $attribute) {
         echo $key .": " . $attribute . "<br>";

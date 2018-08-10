@@ -1,17 +1,17 @@
 <?php
 
-namespace SpidPHP\Strategy;
+namespace Spid\Strategy;
 
-use SpidPHP\Strategy\Interfaces\PhpSamlInterface;
-use SpidPHP\Helpers\IdpHelper;
-use SpidPHP\Helpers\SpHelper;
-use SpidPHP\Config\OneloginSamlConfig;
+use Spid\Interfaces\SpInterface;
+use Spid\Helpers\IdpHelper;
+use Spid\Helpers\SpHelper;
+use Spid\Config\OneloginConfig;
 
 use OneLogin\Saml2\Auth;
 use OneLogin\Saml2\Utils;
 use OneLogin\Saml2\Settings;
 
-class PhpSamlOneLogin implements PhpSamlInterface
+class SpOneLogin implements SpInterface
 {
     private $idpName = null;
     private $settings = null;
@@ -31,7 +31,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     private function init()
     {
-        $settingsHelper = new OneloginSamlConfig();
+        $settingsHelper = new OneloginConfig();
         $this->settingsHelper = $settingsHelper;
         if (!is_null($this->settings)) {
             $diff = array_diff_key($this->settings, get_object_vars($settingsHelper));

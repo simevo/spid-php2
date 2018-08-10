@@ -7,11 +7,9 @@
 require_once(__DIR__ . "/../vendor/autoload.php");
 require_once(__DIR__ . "/settings.php");
 
-use SpidPHP\SpidPHP;
+$sp = new Spid\Sp($settings);
 
-$onelogin = new SpidPHP($settings);
-
-$metadata = $onelogin->getSPMetadata();
+$metadata = $sp->getSPMetadata();
 
 header('Content-Type: text/xml');
 echo $metadata;

@@ -1,11 +1,11 @@
 <?php
 
-namespace SpidPHP\Config;
+namespace Spid\Config;
 
-use SpidPHP\Helpers\SpHelper;
-use SpidPHP\Helpers\IdpHelper;
+use Spid\Helpers\SpHelper;
+use Spid\Helpers\IdpHelper;
 
-class OneloginSamlConfig
+class OneLoginConfig
 {
     // Default values SP
     public $spEntityId = null;
@@ -108,7 +108,7 @@ class OneloginSamlConfig
     public function updateSettings($settings)
     {
         foreach ($settings as $key => $value) {
-            if (!property_exists(OneloginSamlConfig::class, $key)) {
+            if (!property_exists(OneLoginConfig::class, $key)) {
                 continue;
             }
             if (in_array($key, $this->is_not_updatable)) {
@@ -119,7 +119,7 @@ class OneloginSamlConfig
         }
         // Get .key and .cert files content and add it to configuration
         if (!file_exists($this->spKeyFile) || !file_exists($this->spCrtFile)) {
-            throw new \Exception("The path for .key and .cert files is invalid", 1);
+            throw new \Exception("The path for .key ($this->spKeyFile) and .cert ($this->spCrtFile) files is invalid", 1);
         }
         $sp = SpHelper::getSpCert($this->spKeyFile, $this->spCrtFile);
         $this->updateSpData($sp);
@@ -133,7 +133,7 @@ class OneloginSamlConfig
         }
         $metadata = IdpHelper::getMetadata($idpName, $this->idpMetadataFolderPath);
         foreach ($metadata as $key => $value) {
-            if (property_exists(OneloginSamlConfig::class, $key) && strpos($key, "idp") !== false) {
+            if (property_exists(OneLoginConfig::class, $key) && strpos($key, "idp") !== false) {
                 $this->{$key} = $value;
             }
         }

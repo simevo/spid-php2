@@ -1,8 +1,8 @@
 <?php
 
-namespace SpidPHP\Strategy\Interfaces;
+namespace Spid\Interfaces;
 
-interface PhpSamlInterface
+interface SpInterface
 {
     public function getSPMetadata();
     public function getSupportedIdps();
