@@ -1,8 +1,9 @@
 <?php
-namespace Spid;
 
-use Spid\Interfaces\SpInterface;
-use Spid\Strategy\SpOneLogin;
+namespace Italia\Spid2;
+
+use Italia\Spid2\Interfaces\SpInterface;
+use Italia\Spid2\Strategy\SpOneLogin;
 
 class Sp implements SpInterface
 {

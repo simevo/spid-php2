@@ -1,6 +1,6 @@
 <?php
 
-namespace Spid\Interfaces;
+namespace Italia\Spid2\Interfaces;
 
 interface SpInterface
 {

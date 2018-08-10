@@ -1,9 +1,9 @@
 <?php
 
-namespace Spid\Config;
+namespace Italia\Spid2\Config;
 
-use Spid\Helpers\SpHelper;
-use Spid\Helpers\IdpHelper;
+use Italia\Spid2\Helpers\SpHelper;
+use Italia\Spid2\Helpers\IdpHelper;
 
 class OneLoginConfig
 {

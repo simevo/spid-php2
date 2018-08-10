@@ -1,11 +1,11 @@
 <?php
 
-namespace Spid\Strategy;
+namespace Italia\Spid2\Strategy;
 
-use Spid\Interfaces\SpInterface;
-use Spid\Helpers\IdpHelper;
-use Spid\Helpers\SpHelper;
-use Spid\Config\OneloginConfig;
+use Italia\Spid2\Interfaces\SpInterface;
+use Italia\Spid2\Helpers\IdpHelper;
+use Italia\Spid2\Helpers\SpHelper;
+use Italia\Spid2\Config\OneLoginConfig;
 
 use OneLogin\Saml2\Auth;
 use OneLogin\Saml2\Utils;
@@ -31,7 +31,7 @@ class SpOneLogin implements SpInterface
 
     private function init()
     {
-        $settingsHelper = new OneloginConfig();
+        $settingsHelper = new OneLoginConfig();
         $this->settingsHelper = $settingsHelper;
         if (!is_null($this->settings)) {
             $diff = array_diff_key($this->settings, get_object_vars($settingsHelper));

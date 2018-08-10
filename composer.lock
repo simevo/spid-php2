@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c614b6245789a0e2cf885b1e6fc7014",
+    "content-hash": "0e934f11b83adea144b2a84c424aaf82",
     "packages": [
         {
             "name": "onelogin/php-saml",
@@ -95,7 +95,9 @@
                 "xmldsig"
             ],
             "time": "2017-08-31T09:27:07+00:00"
-        },
+        }
+    ],
+    "packages-dev": [
         {
             "name": "squizlabs/php_codesniffer",
             "version": "3.3.1",
@@ -148,7 +150,6 @@
             "time": "2018-07-26T23:47:18+00:00"
         }
     ],
-    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
