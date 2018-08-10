@@ -24,10 +24,10 @@ class SpidPHP implements PhpSamlInterface
     {
         switch ($this->mode) {
             case 'onelogin':
-                $this->phpSaml = new PhpSamlOneLogin($idpName, $this->settings);
+                $this->phpSaml = new PhpSamlOneLogin($this->settings, $idpName);
                 break;
             default:
-                $this->phpSaml = new PhpSamlOneLogin($idpName, $this->settings);
+                $this->phpSaml = new PhpSamlOneLogin($this->settings, $idpName);
                 break;
         }
     }

@@ -14,5 +14,6 @@ $onelogin = new SpidPHP($settings);
 if ($onelogin->isAuthenticated()) {
     $onelogin->logout();
 } else {
-	echo "Logged out!";
+    echo "Logged out!";
+    echo '<p><a href="index.php" >Go back</a></p>';
 }

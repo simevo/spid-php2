@@ -51,7 +51,7 @@ class PhpSamlOneLogin implements PhpSamlInterface
             $this->settings['idpList'] = $this->getSupportedIdps();
             $settingsHelper->updateSettings($this->settings);
         }
-        $this->idpName = is_null($this->idpName) ? $this->settings['idpList'][1] : $this->idpName;
+        $this->idpName = is_null($this->idpName) ? $this->settings['idpList'][0] : $this->idpName;
         $this->settingsHelper->updateIdpMetadata($this->idpName);
         $this->oneloginSettings = new Settings($this->settingsHelper->getSettings());
         $this->auth = new Auth($this->settingsHelper->getSettings());
@@ -173,9 +173,9 @@ class PhpSamlOneLogin implements PhpSamlInterface
 
     public function getAttributes()
     {
-        if (is_null($this->userdata) || !array_key_exists('attributes', $this->userdata)) {
+        if (is_null($this->userdata) || !array_key_exists('samlUserdata', $this->userdata)) {
             return array();
         }
-        return $this->userdata['attributes'];
+        return $this->userdata['samlUserdata'];
     }
 }

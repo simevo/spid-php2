@@ -27,7 +27,7 @@ class OneloginSamlConfig
 
     public $idpList = array();
 
-    private $is_required = ['spBaseUrl', ];
+    private $is_required = ['spBaseUrl'];
     private $is_not_updatable = ['spKeyFileValue', 'spCrtFileValue', 'idpEntityId', 'idpSSO', 'idpSLO', 'idpCertValue'];
 
     public function __construct()
@@ -35,7 +35,7 @@ class OneloginSamlConfig
         // Default values
         $this->spAcsUrl = $this->spBaseUrl . '/index.php?acs';
         $this->spSloUrl = $this->spBaseUrl . '/index.php?sls';
-        $this->spEntityId = $this->spBaseUrl . '/metadata.php';
+        $this->spEntityId = $this->spBaseUrl;
     }
 
     public function getSettings()
