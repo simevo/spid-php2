@@ -23,5 +23,3 @@ if ($onelogin->isAuthenticated()) {
     echo "not logged in !" . PHP_EOL;
     echo '<p><a href="login.php" >Login</a></p>';
 }
-
-
