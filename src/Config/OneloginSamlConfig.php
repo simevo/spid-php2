@@ -8,7 +8,6 @@ use SpidPHP\Helpers\IdpHelper;
 class OneloginSamlConfig
 {
     // Default values SP
-    public $spBaseUrl = '';
     public $spEntityId = null;
     public $spKeyFile = 'sp.key';
     public $spCrtFile = 'sp.crt';
@@ -27,15 +26,14 @@ class OneloginSamlConfig
 
     public $idpList = array();
 
-    private $is_required = ['spBaseUrl'];
+    private $is_required = ['spEntityId'];
     private $is_not_updatable = ['spKeyFileValue', 'spCrtFileValue', 'idpEntityId', 'idpSSO', 'idpSLO', 'idpCertValue'];
 
     public function __construct()
     {
         // Default values
-        $this->spAcsUrl = $this->spBaseUrl . '/index.php?acs';
-        $this->spSloUrl = $this->spBaseUrl . '/index.php?sls';
-        $this->spEntityId = $this->spBaseUrl;
+        $this->spAcsUrl = $this->spEntityId . '/index.php?acs';
+        $this->spSloUrl = $this->spEntityId . '/index.php?sls';
     }
 
     public function getSettings()

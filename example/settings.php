@@ -3,13 +3,14 @@
 $base = "http://sp2.simevo.com:8000";
 $home = "/srv/spid-php2";
 $settings = [
-        'spBaseUrl' => $base,
-        'spEntityId' => $base,
-        'spKeyFile' => $home . "/sp.key",
-        'spCrtFile' => $home . "/sp.crt",
-        'spAcsUrl' => $base . "/acs.php",
-        'spSloUrl' => $base . "/logout.php",
-        'idpMetadataFolderPath' => $home . "/idp_metadata",
+        'spEntityId' => $base, // preferred: https protocol, no path, no trailing slash
+        'spAcsUrl' => $base . "/acs.php", // full url
+        'spSloUrl' => $base . "/logout.php", // full url
+        'spKeyFile' => $home . "/sp.key", // full path
+        'spCrtFile' => $home . "/sp.crt", // full path
+        'idpMetadataFolderPath' => $home . "/idp_metadata", // full path
+        // for each item in the idpList array, a file with the same name and xml extension
+        // must be present in the idpMetadataFolderPath directory
         'idpList' => array(
             'idp_1',
             'idp_2',
