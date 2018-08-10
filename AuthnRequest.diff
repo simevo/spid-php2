@@ -10,4 +10,4 @@
 ---
 >     AssertionConsumerServiceIndex="1"
 >     AttributeConsumingServiceIndex="1">
->     <saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity" NameQualifier="http://sp2.simevo.com:8000">{$spEntityId}</saml:Issuer>
+>     <saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity" NameQualifier="{$spEntityId}">{$spEntityId}</saml:Issuer>
