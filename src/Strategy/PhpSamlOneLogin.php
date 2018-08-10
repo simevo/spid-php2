@@ -127,6 +127,11 @@ class PhpSamlOneLogin implements PhpSamlInterface
             $this->userdata['samlNameId'] = $this->auth->getNameId();
             $this->userdata['samlNameIdFormat'] = $this->auth->getNameIdFormat();
             $this->userdata['samlSessionIndex'] = $this->auth->getSessionIndex();
+            foreach ($this->userdata['samlUserdata'] as $key => &$value) {
+                if (is_array($value)) {
+                    $value = $value[0];
+                }
+            }
         }
         if ($this->auth->isAuthenticated() === false) {
             return false;
