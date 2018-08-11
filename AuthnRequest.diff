@@ -1,9 +1,13 @@
-56,57c56
+72,73c72
 <         Format="{$nameIDPolicyFormat}"
 <         AllowCreate="true" />
 ---
 >         Format="{$nameIDPolicyFormat}" />
-130c129
+143,145c142,144
+<     ProtocolBinding="{$spData['assertionConsumerService']['binding']}"
+<     AssertionConsumerServiceURL="{$acsUrl}">
 <     <saml:Issuer>{$spEntityId}</saml:Issuer>
 ---
->     <saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity" NameQualifier="http://sp2.simevo.com:8000">{$spEntityId}</saml:Issuer>
+>     AssertionConsumerServiceIndex="1"
+>     AttributeConsumingServiceIndex="1">
+>     <saml:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity" NameQualifier="{$spEntityId}">{$spEntityId}</saml:Issuer>

@@ -1,12 +1,30 @@
+<img src="https://github.com/italia/spid-graphics/blob/master/spid-logos/spid-logo-b-lb.png" alt="SPID" data-canonical-src="https://github.com/italia/spid-graphics/blob/master/spid-logos/spid-logo-b-lb.png" width="500" height="98" />
+
+[![Join the #spid-perl channel](https://img.shields.io/badge/Slack%20channel-%23spid--perl-blue.svg?logo=slack)](https://developersitalia.slack.com/messages/C7ESTMQDQ)
+[![Get invited](https://slack.developers.italia.it/badge.svg)](https://slack.developers.italia.it/)
+[![SPID on forum.italia.it](https://img.shields.io/badge/Forum-SPID-blue.svg)](https://forum.italia.it/c/spid)
+
+> ⚠️ **WORK IN PROGRESS (but should be useable)** ⚠️
+
 # spid-php2
+PHP package for SPID authentication based on [php-saml](https://github.com/onelogin/php-saml).
 
-Software Development Kit (SDK) for easy SPID SSO integration based on [php-saml](https://github.com/onelogin/php-saml).
+This PHP package is aimed at implementing SPID **Service Providers**. [SPID](https://www.spid.gov.it/) is the Italian digital identity system, which enables citizens to access all public services with a single set of credentials. This package provides a layer of abstraction over the SAML protocol by exposing just the subset required in order to implement SPID authentication in a web application.
 
-This component acts as a SPID SP (Service Provider) and logs you in via an external IDP (IDentity Provider). It does not support Attribute Authority.
+Features:
+- **routing-agnostic**, can be integrated in any web framework / CMS
+- **sessionless** (apart from a short-lived internal session used to store the request ID and IdP name until the IdP responds)
+- does not currently support Attribute Authority (AA).
 
-Alternative SDK: [spid-php](https://github.com/italia/spid-php) based on [SimpleSAMLphp](https://simplesamlphp.org/).
+Alternatives for PHP:
+- [spid-php](https://github.com/italia/spid-php) based on [SimpleSAMLphp](https://simplesamlphp.org/)
+- [spid-php3](https://github.com/simevo/spid-php3), a lean implementation that does not rely on external SAML packages
 
-## Features
+Alternatives for other languages:
+- [spid-perl](https://github.com/italia/spid-perl)
+- [spid-ruby](https://github.com/italia/spid-ruby)
+
+## Compliance
 
 |<img src="https://github.com/italia/spid-graphics/blob/master/spid-logos/spid-logo-c-lb.png?raw=true" width="100" /><br />_Compliance with [SPID regulations](http://www.agid.gov.it/sites/default/files/circolari/spid-regole_tecniche_v1.pdf) (for Service Providers)_|status (! = TODO)|comments|
 |:---|:---|:---|
@@ -73,84 +91,143 @@ Alternative SDK: [spid-php](https://github.com/italia/spid-php) based on [Simple
 |generation of AttributeQuery XML||Attribute Authority is unsupported|
 |SOAP binding (client)||Attribute Authority is unsupported|
 
-## Prerequisites
+## Repository layout
 
-Tested on Debian 10.x buster with PHP 7.2.
+* [bin/](bin/) auxiliary scripts
+* [example/](example/) contains a demo application
+* [src/](src/) contains the implementation
+* [test/](test/) will contain the unit tests
 
-Perform these steps to install the prerequisites:
-```
+## Getting Started
+
+Tested on Debian 9.5 (stretch, current stable) and 10 (buster, current unstable) with PHP 7-0-7.2.
+
+### Prerequisites
+
+```sh
 sudo apt install composer make openssl php-curl php-zip php-xml
 ```
-if you have PHP <= 7.1 (i.e. Debian 9.4 stretch or earlier), then you also need:
-```
-apt install php-mcrypt
+
+### Configuring and Installing
+
+Before using this package, you must:
+
+1. Install prerequisites with composer
+
+2. Download and verify the Identity Provider (IdP) metadata files; it is advised to place them in a separate directory, for example [example/idp_metadata/](example/idp_metadata/). A convenience tool is provided for this purpose: [bin/download_idp_metadata.php](bin/download_idp_metadata.php).
+
+3. Generate key and certificate for the Service Provider (SP) and patch the php-saml package to comply with the SPID standard. To do that, you can use the provided [Makefile](Makefile).
+
+All steps can be performed with:
+```sh
+composer install --no-dev
+pushd example && ../bin/download_idp_metadata.php && popd
+make
 ```
 
-Then install PHP dependencies; if you have PHP 7.2 (i.e. Debian 10.x buster):
+**NOTE**: during testing, it is highly adviced to use the test Identity Provider [spid-testenv2](https://github.com/italia/spid-testenv2).
+
+### Usage
+
+All classes provided by this package reside in the `Italia\Spid2` namespace.
+
+Load them using the composer-generated autoloader:
+```php
+require_once(__DIR__ . "/../vendor/autoload.php");
 ```
-composer install
+
+The main class is `Italia\Spid2\Sp` (service provider), sample instantiation:
+
+```php
+$base = "http://localhost:8000";
+$settings = [
+        'spEntityId' => $base,
+        'spAcsUrl' => $base . "/acs.php",
+        'spSloUrl' => $base . "/logout.php",
+        'spKeyFile' => "./sp.key",
+        'spCrtFile' => "./sp.crt",
+        'idpMetadataFolderPath' => $home . "/idp_metadata",
+        'idpList' => array(
+            'testenv2'
+        )
+    ];
+$sp = new Italia\Spid2\Sp($settings);
 ```
-if you have PHP <= 7.1 (i.e. Debian 9.4 stretch or earlier), then use the v2.x branch of php-saml:
+
+The service provider is now ready for use, as in:
+```php
+$idp_name = 'idp_1';
+$return_to = 'https://example.com/return_to_url';
+$spid_level = 1;
+$sp->login($idp_name, $return_to, $spid_level);
+$attributes = $sp->getAttributes();
+var_dump($attributes);
+$sp->logout();
 ```
-rm composer.*
-composer require onelogin/php-saml
-composer require twig/twig
-composer require symfony/yaml
-```
 
-## Demo
+### Example
 
-The demo is based on php-saml demo1.
+A basic demo application is provided in the [example/](example/) directory.
 
-To set it up and run it:
+To use:
 
-1. copy `config.yaml.example` to `config.yaml` and customize it as required (you should at least set `idp_metadata_url` to match your IDP metadata endpoint)
+1. in `example/settings.php`:
 
-2. auto-configure:
-    ```
-    make
-    ```
+  - adapt the base url (`$base`) to your needs (use am IP address or a hostname that is visible to the IdP)
+  - make sure the IdP metadata corresponding to the IdPs listed in the `idpList` key are present in `example/idp_metadata`
+
+2. in `example/login.php` change the IdP that will be used to login
 
 3. Start PHP's builtin webserver in the root of the repo:
-    ```
-    php -S localhost:8000 -t www
-    ```
-    if you have php-saml v2.x (i.e. Debian 9.4 stretch), then run it from the www2 dir:
-    ```
-    php -S localhost:8000 -t www2
+    ```sh
+    php -S 0.0.0.0:8000 -t example
     ```
 
-4. visit http://localhost:8000/metadata.php to get the SP (Service Provider) metadata, then copy these over to the IDP
+4. visit http://localhost:8000/metadata.php to get the SP (Service Provider) metadata, then copy these over to the IdP
 
 5. visit: http://localhost:8000 and click `login`.
 
+This screencast shows what you should see if all goes well:
+
+![img](images/screencast.gif)
+
 ## Troubleshooting
 
-- install a browser plugin to trace SAML messages:
+It is advised to install a browser plugin to trace SAML messages:
 
-  - Firefox:
+- Firefox:
 
-    - [SAML-tracer by Olav Morken, Jaime Perez](https://addons.mozilla.org/en-US/firefox/addon/saml-tracer/)
-    - [SAML Message Decoder by Magnus Suther](https://addons.mozilla.org/en-US/firefox/addon/saml-message-decoder-extension/)
+  - [SAML-tracer by Olav Morken, Jaime Perez](https://addons.mozilla.org/en-US/firefox/addon/saml-tracer/)
+  - [SAML Message Decoder by Magnus Suther](https://addons.mozilla.org/en-US/firefox/addon/saml-message-decoder-extension/)
 
-  - Chrome/Chromium:
+- Chrome/Chromium:
 
-    - [SAML Message Decoder by Magnus Suther](https://chrome.google.com/webstore/detail/saml-message-decoder/mpabchoaimgbdbbjjieoaeiibojelbhm)
-    - [SAML Chrome Panel by MLai](https://chrome.google.com/webstore/detail/saml-chrome-panel/paijfdbeoenhembfhkhllainmocckace)
-    - [SAML DevTools extension by stefan.rasmusson.as](https://chrome.google.com/webstore/detail/saml-devtools-extension/jndllhgbinhiiddokbeoeepbppdnhhio)
+  - [SAML Message Decoder by Magnus Suther](https://chrome.google.com/webstore/detail/saml-message-decoder/mpabchoaimgbdbbjjieoaeiibojelbhm)
+  - [SAML Chrome Panel by MLai](https://chrome.google.com/webstore/detail/saml-chrome-panel/paijfdbeoenhembfhkhllainmocckace)
+  - [SAML DevTools extension by stefan.rasmusson.as](https://chrome.google.com/webstore/detail/saml-devtools-extension/jndllhgbinhiiddokbeoeepbppdnhhio)
 
-- use the [SAML Developer Tools](https://www.samltool.com/online_tools.php) provided by onelogin to understand what is going on
+In addition, you can use the [SAML Developer Tools](https://www.samltool.com/online_tools.php) provided by onelogin to understand what is going on
+
+## Testing
+
+### Unit tests
+
+TODO
+
+Unit tests will be performed with PHPunit.
+
+### Linting
+
+This project complies with the [PSR-2: Coding Style Guide](https://www.php-fig.org/psr/psr-2/).
+
+Lint the code with:
+```
+./vendor/bin/phpcs --standard=PSR2 xxx.php
+```
 
 ## Contributing
 
-Your code **should** comply with the [PSR-2: Coding Style Guide](https://www.php-fig.org/psr/psr-2/).
-Check your changes with:
-```
-./vendor/bin/phpcs --standard=PSR2 bin/configure.php
-...
-```
-
-You **must** use the [git-flow workflow](https://danielkummer.github.io/git-flow-cheatsheet/).
+For your contributions please use the [git-flow workflow](https://danielkummer.github.io/git-flow-cheatsheet/).
 
 ## Legalese
 

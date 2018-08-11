@@ -1,9 +1,14 @@
 {
     "name": "italia/spid-php2",
     "require": {
-        "onelogin/php-saml": "3.0.0.x-dev",
-        "twig/twig": "^2.4",
-        "symfony/yaml": "^4.1",
-        "squizlabs/php_codesniffer": "*"
+        "onelogin/php-saml": "3.0.0.x-dev"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Italia\\Spid2\\": "src/"
+        }
     }
 }

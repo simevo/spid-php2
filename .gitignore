@@ -1,10 +1,9 @@
-sp.key
-sp.crt
-vendor
-tmp
-www/settings.php
-www2/settings.php
-config.yaml
 .directory
+.vscode
+.DS_Store
 AuthnRequest.patched
 LogoutRequest.patched
+vendor
+example/sp.key
+example/sp.crt
+example/idp_metadata/*.xml
