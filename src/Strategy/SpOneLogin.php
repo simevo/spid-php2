@@ -167,7 +167,10 @@ class SpOneLogin implements SpInterface
         }
         $this->auth->logout();
 
-        $sloBuiltUrl = $this->auth->logout(null, array(), null, null, true);
+        $nameId = $this->idpName;
+        $nameIdFormat = 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient';
+        $nameIdNameQualifier = $this->idpName;
+        $sloBuiltUrl = $this->auth->logout(null, array(), $nameId, null, true, $nameIdFormat, $nameIdNameQualifier);
         $_SESSION['LogoutRequestID'] = $this->auth->getLastRequestID();
         
         header('Pragma: no-cache');
