@@ -29,11 +29,11 @@ Alternatives for other languages:
 |<img src="https://github.com/italia/spid-graphics/blob/master/spid-logos/spid-logo-c-lb.png?raw=true" width="100" /><br />_Compliance with [SPID regulations](http://www.agid.gov.it/sites/default/files/circolari/spid-regole_tecniche_v1.pdf) (for Service Providers)_|status (! = TODO)|comments|
 |:---|:---|:---|
 |**Metadata:**|||
-|parsing of IdP XML metadata (1.2.2.4)|!|currently you can configure a single IdP supplying its metedata url in the `idp_metadata_url` key of `config.yml`; the implementation of a workflow to configure the metadata for multiple IdPs is underway, see: [#12](https://github.com/simevo/spid-php2/issues/12); the implementation is not currently checking the AgID signature, see: [#17](https://github.com/simevo/spid-php2/issues/17)|
+|parsing of IdP XML metadata (1.2.2.4)|!|the implementation is not currently checking the AgID signature, see: [#17](https://github.com/simevo/spid-php2/issues/17)|
 |parsing of AA XML metadata (2.2.4)||Attribute Authority is unsupported|
 |SP XML metadata generation (1.3.2)|!|the SP metadata is made available at the `/metadata.php` endpoint; it is currently lacking the `AttributeConsumingService` ([#18](https://github.com/simevo/spid-php2/issues/18)) and the optional `Organization` key ([#19](https://github.com/simevo/spid-php2/issues/19))|
 |**AuthnRequest generation (1.2.2.1):**|||
-|generation of AuthnRequest XML|!|the generated AuthnRequest is not 100% compliant, see: [#2](https://github.com/simevo/spid-php2/issues/2)|
+|generation of AuthnRequest XML|✓||
 |HTTP-Redirect binding|✓||
 |HTTP-POST binding|||
 |`AssertionConsumerServiceURL` customization|!|the underlying PHP package we are using as a basis for this SDK ([onelogin/php-saml](https://github.com/onelogin/php-saml)) allows customization of the AuthnRequest, but we are not exposing yet this interface; this is tracked in: [#21](https://github.com/simevo/spid-php2/issues/21)|
@@ -45,7 +45,7 @@ Alternatives for other languages:
 |**Response/Assertion parsing**|||
 |verification of `Response/Signature` value (if any)|!|the underlying package can be configured to request a signed Response (`security.wantMessagesSigned` key) but we are not making use of it ATM, see: [#23](https://github.com/simevo/spid-php2/issues/23)|
 |verification of `Response/Signature` certificate (if any) against IdP/<s>AA metadata</s>|✓|the underlying package checks the signature using the certificate found in the IdP metadata, see: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L369|
-|verification of `Assertion/Signature` value|!|OK but strict mode must be set, see: [#22](https://github.com/simevo/spid-php2/issues/22)|
+|verification of `Assertion/Signature` value|✓||
 |verification of `Assertion/Signature` certificate against IdP/<s>AA metadata</s>|✓|the underlying package checks the signature using the certificate found in the IdP metadata, see: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L369|
 |verification of `SubjectConfirmationData/@Recipient`|!|the underlying package checks it only if it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L302 but the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
 |verification of `SubjectConfirmationData/@NotOnOrAfter`|!|the underlying package checks it only if it is present: https://github.com/onelogin/php-saml/blob/master/lib/Saml2/Response.php#L308 but the spec requires it, see: [#25](https://github.com/simevo/spid-php2/issues/25)|
