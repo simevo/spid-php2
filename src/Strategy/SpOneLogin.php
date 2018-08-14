@@ -162,6 +162,10 @@ class SpOneLogin implements SpInterface
 
     public function logout()
     {
+        if (isset($_SESSION) && isset($_SESSION['idpName'])) {
+            $this->changeIdp($_SESSION['idpName']);
+        }
+
         $this->auth->logout();
 
         $nameId = $this->idpName;
