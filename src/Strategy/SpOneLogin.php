@@ -162,9 +162,6 @@ class SpOneLogin implements SpInterface
 
     public function logout()
     {
-        if ($this->auth->isAuthenticated() === false) {
-            return false;
-        }
         $this->auth->logout();
 
         $nameId = $this->idpName;
