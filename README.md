@@ -212,9 +212,10 @@ In addition, you can use the [SAML Developer Tools](https://www.samltool.com/onl
 
 ### Unit tests
 
-TODO
-
-Unit tests will be performed with PHPunit.
+Launch unit tests with PHPunit:
+```
+phpunit --stderr --testdox tests
+```
 
 ### Linting
 
