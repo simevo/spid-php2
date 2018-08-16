@@ -1,0 +1,5 @@
+178,179c178
+<                      validUntil="{$validUntilTime}"
+<                      cacheDuration="PT{$cacheDuration}S"
+---
+>                      ID="{$spEntityId}"

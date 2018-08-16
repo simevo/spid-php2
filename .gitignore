@@ -3,6 +3,7 @@
 .DS_Store
 AuthnRequest.patched
 LogoutRequest.patched
+Metadata.patched
 vendor
 example/sp.key
 example/sp.crt

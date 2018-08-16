@@ -65,19 +65,16 @@ class OneLoginConfig
                     "requestedAttributes" => array(
                         array (
                             'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_BASIC,
-                            'isRequired' => true,
                             'name' => 'name',
-                           'friendlyName' => 'Nome'
+                            'friendlyName' => 'Nome'
                         ),
                         array (
                             'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_BASIC,
-                            'isRequired' => true,
                             'name' => 'familyName',
                             'friendlyName' => 'Cognome'
                         ),
                         array (
-                             'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_BASIC,
-                            'isRequired' => true,
+                            'nameFormat' => \OneLogin\Saml2\Constants::ATTRNAME_FORMAT_BASIC,
                             'name' => 'fiscalNumber',
                             'friendlyName' => 'Codice Fiscale'
                         ),
