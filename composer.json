@@ -1,5 +1,6 @@
 {
     "name": "italia/spid-php2",
+    "description": "PHP package for SPID authentication based on php-saml",
     "require": {
         "onelogin/php-saml": "3.0.0.x-dev"
     },

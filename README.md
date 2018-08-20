@@ -100,7 +100,7 @@ Alternatives for other languages:
 
 ## Getting Started
 
-Tested on Debian 9.5 (stretch, current stable) and 10 (buster, current unstable) with PHP 7-0-7.2.
+Tested on amd64 Debian 9.5 (stretch, current stable) and 10 (buster, current unstable) with PHP 7.0-7.2.
 
 ### Prerequisites
 
@@ -116,13 +116,13 @@ Before using this package, you must:
 
 2. Download and verify the Identity Provider (IdP) metadata files; it is advised to place them in a separate directory, for example [example/idp_metadata/](example/idp_metadata/). A convenience tool is provided for this purpose: [bin/download_idp_metadata.php](bin/download_idp_metadata.php).
 
-3. Generate key and certificate for the Service Provider (SP) and patch the php-saml package to comply with the SPID standard. To do that, you can use the provided [Makefile](Makefile).
+3. Generate key and certificate for the Service Provider (SP) and patch the php-saml package to comply with the SPID standard.
 
-All steps can be performed with:
+All steps can be performed in an unattended fashion with:
 ```sh
 composer install --no-dev
-pushd example && ../bin/download_idp_metadata.php && popd
 make
+pushd example && ../bin/download_idp_metadata.php && popd
 ```
 
 **NOTE**: during testing, it is highly adviced to use the test Identity Provider [spid-testenv2](https://github.com/italia/spid-testenv2).
@@ -139,27 +139,27 @@ require_once(__DIR__ . "/../vendor/autoload.php");
 The main class is `Italia\Spid2\Sp` (service provider), sample instantiation:
 
 ```php
-$base = "http://localhost:8000";
 $settings = [
-        'spEntityId' => $base,
-        'spAcsUrl' => $base . "/acs.php",
-        'spSloUrl' => $base . "/logout.php",
-        'spKeyFile' => "./sp.key",
-        'spCrtFile' => "./sp.crt",
-        'idpMetadataFolderPath' => $home . "/idp_metadata",
-        'idpList' => array(
-            'testenv2'
-        )
-    ];
+    'spEntityId' => "https://sp.example.com",
+    'idpMetadataFolderPath' => $home . "/idp_metadata",
+    'idpList' => array(
+        'testenv2'
+     ),
+     ...
+];
 $sp = new Italia\Spid2\Sp($settings);
 ```
 
 The service provider is now ready for use, as in:
 ```php
-$idp_name = 'idp_1';
-$return_to = 'https://example.com/return_to_url';
-$spid_level = 1;
-$sp->login($idp_name, $return_to, $spid_level);
+// shortname of IdP, same as the name of corresponding IdP metadata file, without .xml
+$idpName = 'testenv';
+// return url
+$returnTo = 'https://example.com/return_to_url';
+// SPID level (1, 2 or 3)
+$spidLevel = 1;
+$sp->login($idpName, $returnTo, $spidLevel);
+...
 $attributes = $sp->getAttributes();
 var_dump($attributes);
 $sp->logout();
@@ -173,19 +173,16 @@ To use:
 
 1. in `example/settings.php`:
 
-  - adapt the base url (`$base`) to your needs (use am IP address or a hostname that is visible to the IdP)
+  - adapt the base url (`$base`) to your needs (use am IP address or a FQDN that is visible to the IdP)
   - make sure the IdP metadata corresponding to the IdPs listed in the `idpList` key are present in `example/idp_metadata`
 
 2. in `example/login.php` change the IdP that will be used to login
 
-3. Start PHP's builtin webserver in the root of the repo:
-    ```sh
-    php -S 0.0.0.0:8000 -t example
-    ```
+3. Serve the `example` dir from your preferred webserver
 
-4. visit http://localhost:8000/metadata.php to get the SP (Service Provider) metadata, then copy these over to the IdP
+4. visit https://sp.example.com/metadata.php to get the SP (Service Provider) metadata, then copy these over to the IdP and register the SP
 
-5. visit: http://localhost:8000 and click `login`.
+5. visit: https://sp.example.com and click `login`.
 
 This screencast shows what you should see if all goes well:
 
@@ -230,8 +227,16 @@ Lint the code with:
 
 For your contributions please use the [git-flow workflow](https://danielkummer.github.io/git-flow-cheatsheet/).
 
-## Legalese
+## See also
 
-Copyright (c) 2018, Paolo Greppi paolo.greppi@simevo.com
+* [SPID page](https://developers.italia.it/it/spid) on Developers Italia
+
+## Authors
+
+Lorenzo Cattaneo and Paolo Greppi.
+
+## License
+
+Copyright (c) 2018, simevo s.r.l.
 
 License: BSD 3-Clause, see [LICENSE](LICENSE) file.
